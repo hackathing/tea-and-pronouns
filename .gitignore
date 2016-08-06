@@ -6,3 +6,4 @@ dist/
 /log/*
 /tmp/*
 .byebug_history
+public/*

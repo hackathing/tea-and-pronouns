@@ -1,6 +1,7 @@
 module Auth.View exposing (root)
 
 import Html exposing (..)
+import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Auth.State exposing (..)
 
@@ -48,7 +49,7 @@ field name state =
 
 pageSwitch : Page -> String -> Html Msg
 pageSwitch page prompt =
-    a [ onClick <| ChangePage page ] [ text prompt ]
+    a [ href "#", onClick <| ChangePage page ] [ text prompt ]
 
 
 labelText : FieldName -> Html a
