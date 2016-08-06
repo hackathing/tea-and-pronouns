@@ -1,20 +1,21 @@
 {
   "name": "tea-and-pronouns",
-  "description": "",
   "version": "0.1.0",
-  "license": "AGPL-3.0",
-  "author": "Louis Pilfold",
+  "description": "",
+  "main": "n/a",
   "repository": {
     "type": "git",
-    "url": "https://github.com/moarwick/elm-webpack-starter"
+    "url": "git+https://github.com/hackathing/tea-and-pronouns.git"
   },
-  "scripts": {
-    "elm-install": "./node_modules/elm/binwrappers/elm-package install",
-    "start": "webpack-dev-server --hot --inline --content-base src/",
-    "build": "rm -rf dist && webpack",
-    "watch": "webpack --watch"
+  "keywords": [
+  ],
+  "author": "Louis Pilfold, et al",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/hackathing/tea-and-pronouns/issues"
   },
-  "devDependencies": {
+  "homepage": "https://github.com/hackathing/tea-and-pronouns#readme",
+  "dependencies": {
     "autoprefixer": "^6.3.6",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.23.1",
@@ -24,9 +25,10 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^2.17.0",
-    "node-sass": "^3.7.0",
+    "node-sass": "^3.8.0",
+    "normalize.css": "^4.2.0",
     "postcss-loader": "^0.9.1",
-    "sass-loader": "^3.2.0",
+    "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",

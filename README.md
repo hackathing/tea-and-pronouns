@@ -1,17 +1,11 @@
-# elm-webpack-starter
+Tea & Pronouns
+======
 
-### Install:
+## Usage
 
 ```sh
-cd /path/to/project
-npm install
-elm package install
+# Print help
+make
+# Start the app
+make start
 ```
-
-### Serve locally:
-```
-npm start
-```
-* Access app at `http://localhost:8080/`
-* Get coding! The entry point file is `src/Main.elm`
-* Browser will refresh automatically on any file changes..

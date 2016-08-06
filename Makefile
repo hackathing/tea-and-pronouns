@@ -5,12 +5,12 @@ install: ## Install deps
 	npm install
 	./node_modules/elm/binwrappers/elm-package install
 
-start: ## Start dev server
-	./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --content-base src/,
+start: ## Start the server in dev mode
+	NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --content-base src/, --no-info --colors
 
 build: ## Compile the app
 	rm -rf dist
-	./node_modules/webpack/bin/webpack.js
+	NODE_ENV=production ./node_modules/webpack/bin/webpack.js -p
 
 .PHONY: \
 	install \

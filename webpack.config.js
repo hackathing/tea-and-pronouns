@@ -4,21 +4,17 @@ var merge             = require('webpack-merge');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var autoprefixer      = require('autoprefixer');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 
-// detemine build env
-var TARGET_ENV = process.env.npm_lifecycle_event === 'build' ? 'production' : 'development';
+var inProd = process.env.NODE_ENV === "production";
 
-// common webpack config
+var regexEndpoint = JSON.stringify(
+  inProd ? "/regex" : "//localhost:3000/regex"
+);
+
 var commonConfig = {
   output: {
-    path:       path.resolve(__dirname, 'dist/'),
+    path:     path.resolve(__dirname, 'dist/'),
     filename: '[hash].js',
-  },
-
-  resolve: {
-    modulesDirectories: ['node_modules'],
-    extensions:         ['', '.js', '.elm']
   },
 
   module: {
@@ -27,24 +23,36 @@ var commonConfig = {
       {
         test: /\.(eot|ttf|woff|woff2|svg)$/,
         loader: 'file-loader'
+      },
+      {
+        test: /\.(css|scss)$/,
+        loader: ExtractTextPlugin.extract('style-loader', [
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
+        ])
       }
     ]
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      regexEndpoint: regexEndpoint,
+    }),
+
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       inject:   'body',
       filename: 'index.html'
-    })
+    }),
+
+    new ExtractTextPlugin('./[hash].css', { allChunks: true }),
   ],
 
   postcss: [ autoprefixer( { browsers: ['last 2 versions'] } ) ],
-
 }
 
-// additional webpack settings for local env (when invoked by 'npm start')
-if (TARGET_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   console.log('Serving locally...');
 
   module.exports = merge(commonConfig, {
@@ -66,22 +74,12 @@ if (TARGET_ENV === 'development') {
           exclude: [/elm-stuff/, /node_modules/],
           loader:  'elm-hot!elm-webpack?verbose=true&warn=true'
         },
-        {
-          test: /\.(css|scss)$/,
-          loaders: [
-            'style-loader',
-            'css-loader',
-            'postcss-loader',
-            'sass-loader'
-          ]
-        }
-      ]
-    }
+      ],
+    },
   });
 }
 
-// additional webpack settings for prod env (when invoked via 'npm run build')
-if (TARGET_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   console.log('Building for prod...');
 
   module.exports = merge(commonConfig, {
@@ -94,39 +92,16 @@ if (TARGET_ENV === 'production') {
           test:    /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
           loader:  'elm-webpack'
-        },
-        {
-          test: /\.(css|scss)$/,
-          loader: ExtractTextPlugin.extract('style-loader', [
-            'css-loader',
-            'postcss-loader',
-            'sass-loader'
-          ])
         }
       ]
     },
 
     plugins: [
-      new CopyWebpackPlugin([
-        {
-          from: 'src/img/',
-          to:   'img/'
-        },
-        {
-          from: 'src/favicon.ico'
-        },
-      ]),
-
       new webpack.optimize.OccurenceOrderPlugin(),
 
-      // extract CSS into a separate file
-      new ExtractTextPlugin('./[hash].css', { allChunks: true }),
-
-      // minify & mangle JS/CSS
       new webpack.optimize.UglifyJsPlugin({
           minimize:   true,
           compressor: { warnings: false }
-          // mangle:  true
       })
     ]
   });

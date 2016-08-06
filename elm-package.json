@@ -1,10 +1,11 @@
 {
-    "version": "1.0.0",
-    "summary": "Example using `elm-webpack-loader`.",
-    "repository": "https://github.com/moarwick/elm-webpack-starter.git",
-    "license": "MIT",
+    "version": "0.1.0",
+    "summary": "",
+    "repository": "https://github.com/hackathing/tea-and-pronouns.git",
+    "license": "AGPL-3.0",
     "source-directories": [
-        "src"
+        "src",
+        "test"
     ],
     "exposed-modules": [],
     "dependencies": {
