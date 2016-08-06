@@ -1,11 +1,18 @@
-Tea & Pronouns
-======
+Tea and Pronouns
+================
 
-## Usage
+Setup and Install
 
 ```sh
-# Print help
-make
-# Start the app
+# Install dependencies
+make install
+
+# Setup the database
+bundle exec rake db:create db:migrate
+
+# Run the frontend
 make start
+
+# Run the backend
+bundle exec rails server
 ```

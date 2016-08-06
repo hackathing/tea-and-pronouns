@@ -2,3 +2,7 @@ elm-stuff/
 node_modules/
 tmp/
 dist/
+/.bundle
+/log/*
+/tmp/*
+.byebug_history
