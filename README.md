@@ -29,4 +29,5 @@ make start          # Run the front end dev server
 
 ```sh
 bundle exec rake # Test the backend
+make test        # Run the frontend
 ```
