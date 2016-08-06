@@ -4,14 +4,15 @@ module Auth.State
         , Page(Login, Registration)
         , FieldName(Email, Password, PasswordAgain)
         , FieldState
+        , Status(Valid, Invalid)
         , Msg(ChangePage)
         , init
         )
 
 
 type Status
-    = Ok
-    | Error String
+    = Valid
+    | Invalid String
 
 
 type Page
@@ -20,7 +21,7 @@ type Page
 
 
 type alias FieldState =
-    { value : String, status : Status }
+    { value : String, status : Status, touched : Bool }
 
 
 type FieldName
@@ -53,5 +54,14 @@ init =
 fieldInit : FieldState
 fieldInit =
     { value = ""
-    , status = Ok
+    , status = Valid
+    , touched = True
+    }
+
+
+setFieldValue : String -> FieldState -> FieldState
+setFieldValue value field =
+    { field
+        | value = value
+        , touched = True
     }
