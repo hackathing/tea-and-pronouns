@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :controller do
   describe "POST create" do
     it "TODO: test controller" do
-      post :create, {
+      post :create, params: {
         email: "hello@world.com",
         password: "password123",
       }

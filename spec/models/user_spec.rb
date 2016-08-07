@@ -21,6 +21,14 @@ RSpec.describe User, type: :model do
     )
   end
 
+  it 'downcases emails before saving to database' do
+    user = User.create!(
+      email: "HELLO@WORLD.COM",
+      password: "password",
+    )
+    expect(user.email).to eq "hello@world.com"
+  end
+
   it 'is invalid when the email is not unique' do
     user = User.create!(
       email: "hello@world.com",
@@ -57,7 +65,14 @@ RSpec.describe User, type: :model do
   end
 
 
-  xit 'has a hashed password' do
-    
+  it 'has a secure password' do
+    User.create!(
+      email: "hello@world.com",
+      password: "password"
+    )
+    user = User.find_by(email: "hello@world.com")
+    expect(user.password).to eq nil
+    expect(user.password_digest).not_to eq nil
+    expect(user.authenticate('password')).to eq user
   end
 end
