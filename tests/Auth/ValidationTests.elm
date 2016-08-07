@@ -10,6 +10,7 @@ all : List Test
 all =
     [ isValidLoginTests
     , isValidRegistrationTests
+    , validateLoginTests
     , validateRegistrationTests
     ]
 
@@ -238,6 +239,56 @@ validateRegistrationTests =
                         { pw | touched = False, value = "short" }
                 in
                     { registrationModel | password = newPw }
+                        |> validate
+                        |> .password
+                        |> .status
+                        |> equal Valid
+        ]
+
+
+validateLoginTests : Test
+validateLoginTests =
+    describe "Auth.Validation.validate on login page"
+        [ test "short passwords are invalid" <|
+            \() ->
+                let
+                    pw =
+                        loginModel.password
+
+                    newPw =
+                        { pw | touched = True, value = "short" }
+                in
+                    { loginModel | password = newPw }
+                        |> validate
+                        |> .password
+                        |> .status
+                        |> equal
+                            (Invalid "Password must be at least 8 characters")
+        , test "emails that don't look like emails are invalid" <|
+            \() ->
+                let
+                    email =
+                        loginModel.email
+
+                    newEmail =
+                        { email | touched = True, value = "Timmeh" }
+                in
+                    { loginModel | email = newEmail }
+                        |> validate
+                        |> .email
+                        |> .status
+                        |> equal
+                            (Invalid "That doesn't look like a valid email!")
+        , test "untouched fields are always valid" <|
+            \() ->
+                let
+                    pw =
+                        loginModel.password
+
+                    newPw =
+                        { pw | touched = False, value = "short" }
+                in
+                    { loginModel | password = newPw }
                         |> validate
                         |> .password
                         |> .status

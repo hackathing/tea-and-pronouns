@@ -44,7 +44,7 @@ validate : Model -> Model
 validate model =
     case model.page of
         Login ->
-            model
+            validateLogin model
 
         Registration ->
             validateRegistration model
@@ -57,12 +57,31 @@ validateRegistration model =
             checkPasswordLength model.password
 
         email =
-            checkEmail model.email
+            checkEmailFormat model.email
 
         passwordAgain =
             checkPasswordAgain model.passwordAgain model.password
     in
-        { model | password = password, passwordAgain = passwordAgain, email = email }
+        { model
+            | password = password
+            , passwordAgain = passwordAgain
+            , email = email
+        }
+
+
+validateLogin : Model -> Model
+validateLogin model =
+    let
+        password =
+            checkPasswordLength model.password
+
+        email =
+            checkEmailFormat model.email
+    in
+        { model
+            | password = password
+            , email = email
+        }
 
 
 checkPasswordLength : FieldState -> FieldState
@@ -75,8 +94,8 @@ checkPasswordLength password =
         password
 
 
-checkEmail : FieldState -> FieldState
-checkEmail email =
+checkEmailFormat : FieldState -> FieldState
+checkEmailFormat email =
     if email.touched && not (String.contains "@" email.value) then
         { email
             | status = (Invalid "That doesn't look like a valid email!")
