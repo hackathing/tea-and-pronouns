@@ -1,7 +1,8 @@
 module Auth.View exposing (root)
 
 import Html exposing (..)
-import Html.Events exposing (onClick)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onClick, onInput)
 import Auth.State exposing (..)
 
 
@@ -19,9 +20,9 @@ login : Model -> Html Msg
 login model =
     div []
         [ h1 [] [ text "Login" ]
-        , field Email model.email
-        , field Password model.password
-        , button [] [ text "Submit" ]
+        , emailField model
+        , passwordField model
+        , button [ onClick Submit ] [ text "Submit" ]
         , pageSwitch Registration "Need to create an account?"
         ]
 
@@ -30,36 +31,58 @@ registration : Model -> Html Msg
 registration model =
     div []
         [ h1 [] [ text "Registration" ]
-        , field Email model.email
-        , field Password model.password
-        , field PasswordAgain model.passwordAgain
-        , button [] [ text "Submit" ]
+        , emailField model
+        , passwordField model
+        , passwordAgainField model
+        , button [ onClick Submit ] [ text "Submit" ]
         , pageSwitch Login "Already have an account?"
         ]
 
 
-field : FieldName -> FieldState -> Html a
-field name state =
+emailField : Model -> Html Msg
+emailField model =
     div []
-        [ label [] [ labelText name ]
-        , input [] [ text state.value ]
+        [ label []
+            [ text "Email" ]
+        , input [ onInput ChangeEmail ]
+            [ text model.email.value ]
+        , errorDisplay model.email
         ]
+
+
+passwordField : Model -> Html Msg
+passwordField model =
+    div []
+        [ label []
+            [ text "Password" ]
+        , input [ onInput ChangePassword ]
+            [ text model.password.value ]
+        , errorDisplay model.password
+        ]
+
+
+passwordAgainField : Model -> Html Msg
+passwordAgainField model =
+    div []
+        [ label []
+            [ text "Password Confirmation" ]
+        , input [ onInput ChangePasswordAgain ]
+            [ text model.passwordAgain.value ]
+        , errorDisplay model.passwordAgain
+        ]
+
+
+errorDisplay : FieldState -> Html a
+errorDisplay field =
+    span [] <|
+        case field.status of
+            Valid ->
+                []
+
+            Invalid error ->
+                [ text error ]
 
 
 pageSwitch : Page -> String -> Html Msg
 pageSwitch page prompt =
-    a [ onClick <| ChangePage page ] [ text prompt ]
-
-
-labelText : FieldName -> Html a
-labelText name =
-    text <|
-        case name of
-            Email ->
-                "Email"
-
-            Password ->
-                "Password"
-
-            PasswordAgain ->
-                "Password Confirmation"
+    a [ href "#", onClick <| ChangePage page ] [ text prompt ]

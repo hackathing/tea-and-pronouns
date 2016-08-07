@@ -13,7 +13,7 @@ var regexEndpoint = JSON.stringify(
 
 var commonConfig = {
   output: {
-    path:     path.resolve(__dirname, 'dist/'),
+    path:     path.resolve(__dirname, 'public/'),
     filename: '[hash].js',
   },
 

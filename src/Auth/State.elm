@@ -4,14 +4,15 @@ module Auth.State
         , Page(Login, Registration)
         , FieldName(Email, Password, PasswordAgain)
         , FieldState
-        , Msg(ChangePage)
+        , Status(Valid, Invalid)
+        , Msg(..)
         , init
         )
 
 
 type Status
-    = Ok
-    | Error String
+    = Valid
+    | Invalid String
 
 
 type Page
@@ -39,6 +40,10 @@ type alias Model =
 
 type Msg
     = ChangePage Page
+    | ChangeEmail String
+    | ChangePassword String
+    | ChangePasswordAgain String
+    | Submit
 
 
 init : Model
@@ -53,5 +58,5 @@ init =
 fieldInit : FieldState
 fieldInit =
     { value = ""
-    , status = Ok
+    , status = Valid
     }
