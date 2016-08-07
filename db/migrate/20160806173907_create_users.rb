@@ -3,8 +3,10 @@ class CreateUsers < ActiveRecord::Migration[5.0]
     create_table :users do |t|
       t.string :email, null: false
       t.string :password_digest, null: false
+      t.string :access_token
 
       t.index :email, unique: true
+      t.index :access_token, unique: true
       t.timestamps
     end
   end
