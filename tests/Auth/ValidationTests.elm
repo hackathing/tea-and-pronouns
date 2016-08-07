@@ -23,42 +23,6 @@ isValidLoginTests =
                 loginModel
                     |> isValid
                     |> equal True
-        , test "it is invalid with untouched email" <|
-            \() ->
-                let
-                    email =
-                        loginModel.email
-
-                    newEmail =
-                        { email | touched = False }
-                in
-                    { loginModel | email = newEmail }
-                        |> isValid
-                        |> equal False
-        , test "it is invalid with untouched password" <|
-            \() ->
-                let
-                    pw =
-                        loginModel.password
-
-                    newPw =
-                        { pw | touched = False }
-                in
-                    { loginModel | password = newPw }
-                        |> isValid
-                        |> equal False
-        , test "login page does not require passwordAgain to be touched" <|
-            \() ->
-                let
-                    pw =
-                        loginModel.passwordAgain
-
-                    newPw =
-                        { pw | touched = False }
-                in
-                    { loginModel | passwordAgain = newPw }
-                        |> isValid
-                        |> equal True
         , test "it is invalid with email error" <|
             \() ->
                 let
@@ -106,42 +70,6 @@ isValidRegistrationTests =
                 registrationModel
                     |> isValid
                     |> equal True
-        , test "it is invalid with untouched email" <|
-            \() ->
-                let
-                    email =
-                        registrationModel.email
-
-                    newEmail =
-                        { email | touched = False }
-                in
-                    { registrationModel | email = newEmail }
-                        |> isValid
-                        |> equal False
-        , test "it is invalid with untouched password" <|
-            \() ->
-                let
-                    pw =
-                        registrationModel.password
-
-                    newPw =
-                        { pw | touched = False }
-                in
-                    { registrationModel | password = newPw }
-                        |> isValid
-                        |> equal False
-        , test "it is invalid with untouched passwordAgain" <|
-            \() ->
-                let
-                    pw =
-                        registrationModel.passwordAgain
-
-                    newPw =
-                        { pw | touched = False }
-                in
-                    { registrationModel | passwordAgain = newPw }
-                        |> isValid
-                        |> equal False
         , test "it is invalid with email error" <|
             \() ->
                 let
@@ -191,7 +119,7 @@ validateRegistrationTests =
                         registrationModel.password
 
                     newPw =
-                        { pw | touched = True, value = "short" }
+                        { pw | value = "short" }
                 in
                     { registrationModel | password = newPw }
                         |> validate
@@ -206,7 +134,7 @@ validateRegistrationTests =
                         registrationModel.email
 
                     newEmail =
-                        { email | touched = True, value = "Timmeh" }
+                        { email | value = "Timmeh" }
                 in
                     { registrationModel | email = newEmail }
                         |> validate
@@ -221,7 +149,7 @@ validateRegistrationTests =
                         registrationModel.passwordAgain
 
                     newPw =
-                        { pw | touched = True, value = "some other value" }
+                        { pw | value = "some other value" }
                 in
                     { registrationModel | passwordAgain = newPw }
                         |> validate
@@ -229,20 +157,6 @@ validateRegistrationTests =
                         |> .status
                         |> equal
                             (Invalid "Passwords don't match!")
-        , test "untouched fields are always valid" <|
-            \() ->
-                let
-                    pw =
-                        registrationModel.password
-
-                    newPw =
-                        { pw | touched = False, value = "short" }
-                in
-                    { registrationModel | password = newPw }
-                        |> validate
-                        |> .password
-                        |> .status
-                        |> equal Valid
         ]
 
 
@@ -256,7 +170,7 @@ validateLoginTests =
                         loginModel.password
 
                     newPw =
-                        { pw | touched = True, value = "short" }
+                        { pw | value = "short" }
                 in
                     { loginModel | password = newPw }
                         |> validate
@@ -271,7 +185,7 @@ validateLoginTests =
                         loginModel.email
 
                     newEmail =
-                        { email | touched = True, value = "Timmeh" }
+                        { email | value = "Timmeh" }
                 in
                     { loginModel | email = newEmail }
                         |> validate
@@ -279,29 +193,15 @@ validateLoginTests =
                         |> .status
                         |> equal
                             (Invalid "That doesn't look like a valid email!")
-        , test "untouched fields are always valid" <|
-            \() ->
-                let
-                    pw =
-                        loginModel.password
-
-                    newPw =
-                        { pw | touched = False, value = "short" }
-                in
-                    { loginModel | password = newPw }
-                        |> validate
-                        |> .password
-                        |> .status
-                        |> equal Valid
         ]
 
 
 validModel : Model
 validModel =
     { page = Registration
-    , email = { value = "louis@example.eu", touched = True, status = Valid }
-    , password = { value = "hunter99", touched = True, status = Valid }
-    , passwordAgain = { value = "hunter99", touched = True, status = Valid }
+    , email = { value = "louis@example.eu", status = Valid }
+    , password = { value = "hunter99", status = Valid }
+    , passwordAgain = { value = "hunter99", status = Valid }
     }
 
 

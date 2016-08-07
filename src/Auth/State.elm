@@ -21,7 +21,7 @@ type Page
 
 
 type alias FieldState =
-    { value : String, status : Status, touched : Bool }
+    { value : String, status : Status }
 
 
 type FieldName
@@ -55,13 +55,4 @@ fieldInit : FieldState
 fieldInit =
     { value = ""
     , status = Valid
-    , touched = True
-    }
-
-
-setFieldValue : String -> FieldState -> FieldState
-setFieldValue value field =
-    { field
-        | value = value
-        , touched = True
     }

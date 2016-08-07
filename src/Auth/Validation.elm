@@ -8,36 +8,13 @@ isValid : Model -> Bool
 isValid model =
     case model.page of
         Registration ->
-            allRegFieldsTouched model && allRegFieldsValid model
+            (model.email.status == Valid)
+                && (model.password.status == Valid)
+                && (model.passwordAgain.status == Valid)
 
         Login ->
-            allLoginFieldsTouched model && allLoginFieldsValid model
-
-
-allRegFieldsTouched : Model -> Bool
-allRegFieldsTouched model =
-    model.email.touched
-        && model.password.touched
-        && model.passwordAgain.touched
-
-
-allRegFieldsValid : Model -> Bool
-allRegFieldsValid model =
-    (model.email.status == Valid)
-        && (model.password.status == Valid)
-        && (model.passwordAgain.status == Valid)
-
-
-allLoginFieldsTouched : Model -> Bool
-allLoginFieldsTouched model =
-    model.email.touched
-        && model.password.touched
-
-
-allLoginFieldsValid : Model -> Bool
-allLoginFieldsValid model =
-    (model.email.status == Valid)
-        && (model.password.status == Valid)
+            (model.email.status == Valid)
+                && (model.password.status == Valid)
 
 
 validate : Model -> Model
@@ -86,7 +63,7 @@ validateLogin model =
 
 checkPasswordLength : FieldState -> FieldState
 checkPasswordLength password =
-    if password.touched && String.length password.value < 8 then
+    if String.length password.value < 8 then
         { password
             | status = (Invalid "Password must be at least 8 characters")
         }
@@ -96,17 +73,17 @@ checkPasswordLength password =
 
 checkEmailFormat : FieldState -> FieldState
 checkEmailFormat email =
-    if email.touched && not (String.contains "@" email.value) then
+    if String.contains "@" email.value then
+        email
+    else
         { email
             | status = (Invalid "That doesn't look like a valid email!")
         }
-    else
-        email
 
 
 checkPasswordAgain : FieldState -> FieldState -> FieldState
 checkPasswordAgain passwordAgain password =
-    if passwordAgain.touched && passwordAgain.value /= password.value then
+    if passwordAgain.value /= password.value then
         { passwordAgain
             | status = (Invalid "Passwords don't match!")
         }
