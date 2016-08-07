@@ -28,6 +28,7 @@ make start          # Run the front end dev server
 ## Testing
 
 ```sh
-bundle exec rake # Test the backend
-make test        # Run the frontend
+make test         # Run the frontend
+bundle exec rake  # Test the backend
+bundle exec guard # Run the test watcher
 ```
