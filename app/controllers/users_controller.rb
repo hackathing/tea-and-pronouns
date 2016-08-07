@@ -3,7 +3,10 @@ class UsersController < ApplicationController
     user = User.new(user_params)
     if user.save
       render status: 201, json: {
-        user: user,
+        user: {
+          email: user.email,
+          persisted: user.persisted?,
+        },
       }
     else
       render status: 400, json: {
