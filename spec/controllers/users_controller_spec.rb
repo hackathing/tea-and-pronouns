@@ -28,6 +28,7 @@ RSpec.describe UsersController, type: :controller do
         user: {
           persisted: true,
           email: "hello@world.com",
+          token: "TODO: real token",
         },
       }.to_json)
     end
