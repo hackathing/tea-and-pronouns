@@ -1,7 +1,22 @@
 class UsersController < ApplicationController
   def create
-    render json: {
-      status: :ok,
-    }
+    user = User.new(user_params)
+    if user.save
+      render status: 201, json: {
+        user: user,
+      }
+    else
+      render status: 400, json: {
+        errors: {
+          user: user.errors,
+        }
+      }
+    end
+  end
+
+  private
+
+  def user_params
+    params.fetch(:user, {}).permit(:email, :password)
   end
 end
