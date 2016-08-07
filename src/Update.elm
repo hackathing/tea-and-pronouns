@@ -4,9 +4,9 @@ import State exposing (..)
 import Auth.Update as Auth
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case debug msg model of
+doUpdate : Msg -> Model -> ( Model, Cmd Msg )
+doUpdate msg model =
+    case msg of
         AuthMsg msg ->
             ( { model
                 | auth = Auth.update msg model.auth
@@ -15,13 +15,16 @@ update msg model =
             )
 
 
-debug : Msg -> Model -> Msg
-debug msg model =
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
     let
-        _ =
-            Debug.log "Msg" msg
+        ( newModel, cmd ) =
+            doUpdate msg model
 
         _ =
-            Debug.log "Model" model
+            Debug.log "Model" newModel
+
+        _ =
+            Debug.log "Msg" msg
     in
-        msg
+        ( newModel, cmd )

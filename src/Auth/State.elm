@@ -5,7 +5,7 @@ module Auth.State
         , FieldName(Email, Password, PasswordAgain)
         , FieldState
         , Status(Valid, Invalid)
-        , Msg(ChangePage)
+        , Msg(..)
         , init
         )
 
@@ -40,6 +40,10 @@ type alias Model =
 
 type Msg
     = ChangePage Page
+    | ChangeEmail String
+    | ChangePassword String
+    | ChangePasswordAgain String
+    | Submit
 
 
 init : Model
