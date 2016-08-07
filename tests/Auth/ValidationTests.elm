@@ -141,7 +141,7 @@ validateRegistrationTests =
                         |> .email
                         |> .status
                         |> equal
-                            (Invalid "That doesn't look like a valid email!")
+                            (Invalid "That doesn't look like a valid email")
         , test "passwordAgain is invalid unless it matches password" <|
             \() ->
                 let
@@ -156,7 +156,7 @@ validateRegistrationTests =
                         |> .passwordAgain
                         |> .status
                         |> equal
-                            (Invalid "Passwords don't match!")
+                            (Invalid "Passwords don't match")
         ]
 
 
@@ -192,7 +192,7 @@ validateLoginTests =
                         |> .email
                         |> .status
                         |> equal
-                            (Invalid "That doesn't look like a valid email!")
+                            (Invalid "That doesn't look like a valid email")
         ]
 
 

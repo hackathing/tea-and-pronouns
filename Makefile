@@ -29,4 +29,5 @@ build: ## Compile the app
 	install \
 	start \
 	build \
+	test \
 	help
