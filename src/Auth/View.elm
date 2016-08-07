@@ -46,6 +46,7 @@ emailField model =
             [ text "Email" ]
         , input [ onInput ChangeEmail ]
             [ text model.email.value ]
+        , errorDisplay model.email
         ]
 
 
@@ -56,6 +57,7 @@ passwordField model =
             [ text "Password" ]
         , input [ onInput ChangePassword ]
             [ text model.password.value ]
+        , errorDisplay model.password
         ]
 
 
@@ -66,7 +68,19 @@ passwordAgainField model =
             [ text "Password Confirmation" ]
         , input [ onInput ChangePasswordAgain ]
             [ text model.passwordAgain.value ]
+        , errorDisplay model.passwordAgain
         ]
+
+
+errorDisplay : FieldState -> Html a
+errorDisplay field =
+    span [] <|
+        case field.status of
+            Valid ->
+                []
+
+            Invalid error ->
+                [ text error ]
 
 
 pageSwitch : Page -> String -> Html Msg
