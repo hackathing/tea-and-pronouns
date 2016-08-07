@@ -3,13 +3,14 @@ module Auth.ValidationTests exposing (all)
 import Test exposing (..)
 import Expect exposing (..)
 import Auth.State exposing (..)
-import Auth.Validation exposing (isValid)
+import Auth.Validation exposing (isValid, validate)
 
 
 all : List Test
 all =
     [ isValidLoginTests
     , isValidRegistrationTests
+    , validateRegistrationTests
     ]
 
 
@@ -176,6 +177,71 @@ isValidRegistrationTests =
                     { registrationModel | passwordAgain = newPw }
                         |> isValid
                         |> equal False
+        ]
+
+
+validateRegistrationTests : Test
+validateRegistrationTests =
+    describe "Auth.Validation.validate on registration page"
+        [ test "short passwords are invalid" <|
+            \() ->
+                let
+                    pw =
+                        registrationModel.password
+
+                    newPw =
+                        { pw | touched = True, value = "short" }
+                in
+                    { registrationModel | password = newPw }
+                        |> validate
+                        |> .password
+                        |> .status
+                        |> equal
+                            (Invalid "Password must be at least 8 characters")
+        , test "emails that don't look like emails are invalid" <|
+            \() ->
+                let
+                    email =
+                        registrationModel.email
+
+                    newEmail =
+                        { email | touched = True, value = "Timmeh" }
+                in
+                    { registrationModel | email = newEmail }
+                        |> validate
+                        |> .email
+                        |> .status
+                        |> equal
+                            (Invalid "That doesn't look like a valid email!")
+        , test "passwordAgain is invalid unless it matches password" <|
+            \() ->
+                let
+                    pw =
+                        registrationModel.passwordAgain
+
+                    newPw =
+                        { pw | touched = True, value = "some other value" }
+                in
+                    { registrationModel | passwordAgain = newPw }
+                        |> validate
+                        |> .passwordAgain
+                        |> .status
+                        |> equal
+                            (Invalid "Passwords don't match!")
+        , test "untouched fields are always valid" <|
+            \() ->
+                let
+                    pw =
+                        registrationModel.password
+
+                    newPw =
+                        { pw | touched = False, value = "short" }
+                in
+                    { registrationModel | password = newPw }
+                        |> validate
+                        |> .password
+                        |> .status
+                        |> equal Valid
         ]
 
 

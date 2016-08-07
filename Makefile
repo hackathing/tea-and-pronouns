@@ -21,9 +21,6 @@ start: ## Start the frontend dev server
 test: ## Run the frontend tests
 	$(ELM_TEST)
 
-test-watch:
-	bundle exec guard
-
 build: ## Compile the app
 	rm -rf dist
 	NODE_ENV=production $(WEBPACK) -p
