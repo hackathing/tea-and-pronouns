@@ -8,11 +8,13 @@ doUpdate : Msg -> Model -> ( Model, Cmd Msg )
 doUpdate msg model =
     case msg of
         AuthMsg msg ->
-            ( { model
-                | auth = Auth.update msg model.auth
-              }
-            , Cmd.none
-            )
+            let
+                ( authModel, cmd ) =
+                    Auth.update msg model.auth
+            in
+                ( { model | auth = authModel }
+                , Cmd.map AuthMsg cmd
+                )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -23,6 +25,9 @@ update msg model =
 
         _ =
             Debug.log "Model" newModel
+
+        _ =
+            Debug.log "Cmd" cmd
 
         _ =
             Debug.log "Msg" msg
