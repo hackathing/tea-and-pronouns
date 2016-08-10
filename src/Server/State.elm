@@ -1,6 +1,7 @@
-module Server.State exposing (Msg, Model, init)
+module Server.State exposing (Msg(..), Model, init)
 
 import Http
+import User exposing (User)
 
 
 type alias Model =
@@ -15,9 +16,9 @@ type Status
 
 
 type Msg
-    = Login { email : String, password : String }
-    | LoginSuccess String
-    | LoginFail Http.Error
+    = Register { email : String, password : String }
+    | RegisterSuccess User
+    | RegisterFail Http.Error
 
 
 init : Model

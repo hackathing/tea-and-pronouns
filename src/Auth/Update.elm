@@ -26,8 +26,8 @@ update msg model =
             , Cmd.none
             )
 
-        DoLogin _ ->
-            ( model, Cmd.none )
+        DoRegister _ ->
+            Debug.crash "TODO. Use this for disabling button"
 
         Submit ->
             maybeLogin model
@@ -44,7 +44,7 @@ maybeLogin model =
                 { email = model.email.value
                 , password = model.password.value
                 }
-                    |> DoLogin
+                    |> DoRegister
                     |> sendMsg
             else
                 Cmd.none
