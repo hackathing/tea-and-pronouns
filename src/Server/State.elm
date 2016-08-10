@@ -1,4 +1,4 @@
-module Server.State exposing (Msg)
+module Server.State exposing (Msg, Model, init)
 
 import Http
 

@@ -2,6 +2,7 @@ module Auth.Update exposing (update)
 
 import Auth.State exposing (..)
 import Auth.Validation exposing (validate, isValid)
+import MsgTools exposing (sendMsg)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -25,19 +26,30 @@ update msg model =
             , Cmd.none
             )
 
-        Submit ->
-            let
-                newModel =
-                    validate model
+        DoLogin _ ->
+            ( model, Cmd.none )
 
-                cmd =
-                    if isValid newModel then
-                        -- TODO: Insert API call here
-                        Cmd.none
-                    else
-                        Cmd.none
-            in
-                ( newModel, cmd )
+        Submit ->
+            maybeLogin model
+
+
+maybeLogin : Model -> ( Model, Cmd Msg )
+maybeLogin model =
+    let
+        newModel =
+            validate model
+
+        cmd =
+            if isValid newModel then
+                { email = model.email.value
+                , password = model.password.value
+                }
+                    |> DoLogin
+                    |> sendMsg
+            else
+                Cmd.none
+    in
+        ( newModel, cmd )
 
 
 setValue : String -> FieldState -> FieldState
