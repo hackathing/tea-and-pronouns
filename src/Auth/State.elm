@@ -44,6 +44,7 @@ type Msg
     | ChangePassword String
     | ChangePasswordAgain String
     | Submit
+    | DoRegister { email : String, password : String }
 
 
 init : Model

@@ -157,6 +157,48 @@ validateRegistrationTests =
                         |> .status
                         |> equal
                             (Invalid "Passwords don't match")
+        , test "email marked as invalid can become valid again" <|
+            \() ->
+                let
+                    field =
+                        registrationModel.email
+
+                    newField =
+                        { field | status = Invalid "" }
+                in
+                    { registrationModel | email = newField }
+                        |> validate
+                        |> .email
+                        |> .status
+                        |> equal Valid
+        , test "password marked as invalid can become valid again" <|
+            \() ->
+                let
+                    field =
+                        registrationModel.password
+
+                    newField =
+                        { field | status = Invalid "" }
+                in
+                    { registrationModel | password = newField }
+                        |> validate
+                        |> .password
+                        |> .status
+                        |> equal Valid
+        , test "passwordAgain marked as invalid can become valid again" <|
+            \() ->
+                let
+                    field =
+                        registrationModel.passwordAgain
+
+                    newField =
+                        { field | status = Invalid "" }
+                in
+                    { registrationModel | passwordAgain = newField }
+                        |> validate
+                        |> .passwordAgain
+                        |> .status
+                        |> equal Valid
         ]
 
 
@@ -193,6 +235,34 @@ validateLoginTests =
                         |> .status
                         |> equal
                             (Invalid "That doesn't look like a valid email")
+        , test "email marked as invalid can become valid again" <|
+            \() ->
+                let
+                    field =
+                        registrationModel.email
+
+                    newField =
+                        { field | status = Invalid "" }
+                in
+                    { registrationModel | email = newField }
+                        |> validate
+                        |> .email
+                        |> .status
+                        |> equal Valid
+        , test "password marked as invalid can become valid again" <|
+            \() ->
+                let
+                    field =
+                        registrationModel.password
+
+                    newField =
+                        { field | status = Invalid "" }
+                in
+                    { registrationModel | password = newField }
+                        |> validate
+                        |> .password
+                        |> .status
+                        |> equal Valid
         ]
 
 
