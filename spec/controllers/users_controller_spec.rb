@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
+
   describe "POST create" do
     it "creates a new User" do
       expect(User.count).to eq 0
@@ -24,10 +25,12 @@ RSpec.describe UsersController, type: :controller do
         }
       }
       expect(response.status).to eq 201
-      expect(response.body).to include_json({
+      user = User.first
+      expect(response.body).to be_json_eql({
         user: {
           persisted: true,
           email: "hello@world.com",
+          token: user.token,
         },
       }.to_json)
     end
