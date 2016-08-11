@@ -5,6 +5,8 @@ gem 'rails', '~> 5.0.0'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'bcrypt', '~> 3.1.7'
+gem 'jwt'
+gem 'has_secure_token'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS)
 # gem 'rack-cors'

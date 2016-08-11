@@ -5,6 +5,7 @@ class UsersController < ApplicationController
       render status: 201, json: {
         user: {
           email: user.email,
+          token: user.token,
           persisted: user.persisted?,
         },
       }
@@ -20,6 +21,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.fetch(:user, {}).permit(:email, :password)
+    params.fetch(:user, {}).permit(:email, :password, :token)
   end
 end

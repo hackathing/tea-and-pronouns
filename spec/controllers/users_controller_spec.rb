@@ -24,7 +24,7 @@ RSpec.describe UsersController, type: :controller do
         }
       }
       expect(response.status).to eq 201
-      expect(response.body).to be_json_eql({
+      expect(response.body).to include_json({
         user: {
           persisted: true,
           email: "hello@world.com",
@@ -53,5 +53,18 @@ RSpec.describe UsersController, type: :controller do
         },
       }.to_json)
     end
+
+     it "assigns a token to the user" do
+      post :create, params: {
+        user: {
+          email: "hello@world.com",
+          password: "password123",
+        }
+      }
+      expect(response.status).to eq 201
+      user = User.first
+      expect(user.token).not_to eq nil
+    end  
+
   end
 end
