@@ -21,6 +21,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.fetch(:user, {}).permit(:email, :password, :token)
+    params.fetch(:user, {}).permit(:email, :password)
   end
 end
