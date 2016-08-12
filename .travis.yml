@@ -1,6 +1,15 @@
-sudo: false # faster builds
+sudo: required
+
+language: ruby
+
+rvm:
+  - 2.2.2
+
+services:
+  - docker
 
 before_script:
+  - docker run postgres
   - bundle exec rake db:create db:migrate
 
 notifications:
