@@ -61,6 +61,43 @@ RSpec.describe SessionsController, type: :controller do
       expect(response.status).to eq 400
     end
 
+    it "renders error information to the user when email is not registered" do
+      user = User.create!(
+      email: "hello@world.com",
+      password: "password123",
+      )
+      post :create, params: {
+        user: {
+          email: "helloworld",
+          password: "password123",
+        }
+      }
+      expect(response.status).to eq 400
+      expect(response.body).to be_json_eql({
+        errors: {
+          user: ["not found"],
+        },
+      }.to_json)
+    end
+
+    it "renders error information to the user when password is not valid" do
+      user = User.create!(
+      email: "hello@world.com",
+      password: "password123",
+      )
+      post :create, params: {
+        user: {
+          email: "hello@world.com",
+          password: "password456",
+        }
+      }
+      expect(response.status).to eq 400
+      expect(response.body).to be_json_eql({
+        errors: {
+          user: { password: ["is incorrect"] }
+        },
+      }.to_json)
+    end
   end
 end
 
