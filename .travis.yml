@@ -1,0 +1,7 @@
+sudo: false # faster builds
+
+before_script:
+  - bundle exec rake db:create db:migrate
+
+notifications:
+  email: false
