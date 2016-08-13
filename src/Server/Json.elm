@@ -5,8 +5,12 @@ import Json.Encode exposing (..)
 
 auth : { email : String, password : String } -> String
 auth values =
-    [ ( "email", string values.email )
-    , ( "password", string values.password )
+    [ ( "user"
+      , object
+            [ ( "email", string values.email )
+            , ( "password", string values.password )
+            ]
+      )
     ]
         |> object
         |> encode 0
