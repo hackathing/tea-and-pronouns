@@ -22,11 +22,14 @@ update msg model =
 
 doRegister : { email : String, password : String } -> Cmd Msg
 doRegister state =
-    let
-        payload =
-            Http.string (Json.auth state)
-
-        cmd =
-            Http.post User.fromAuthJson "//localhost:3000/users" payload
-    in
-        Task.perform RegisterFail RegisterSuccess cmd
+    { verb = "POST"
+    , headers =
+        [ ( "Content-Type", "application/json" )
+        , ( "Accept", "application/json" )
+        ]
+    , url = "//localhost:3000/users"
+    , body = Http.string (Json.auth state)
+    }
+        |> Http.send Http.defaultSettings
+        |> Http.fromJson User.fromAuthJson
+        |> Task.perform RegisterFail RegisterSuccess
