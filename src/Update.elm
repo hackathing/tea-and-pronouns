@@ -16,6 +16,9 @@ doUpdate msg model =
         AuthMsg (Auth.State.DoRegister state) ->
             updateServer (Server.State.Register state) model
 
+        AuthMsg (Auth.State.DoLogin state) ->
+            updateServer (Server.State.Login state) model
+
         AuthMsg msg ->
             let
                 ( authModel, cmd ) =

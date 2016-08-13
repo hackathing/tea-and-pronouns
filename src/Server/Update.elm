@@ -13,23 +13,40 @@ update msg model =
         Register state ->
             ( model, doRegister state )
 
-        RegisterSuccess user ->
-            Debug.crash "TODO"
+        Login state ->
+            ( model, doLogin state )
 
-        RegisterFail error ->
+        AuthSuccess user ->
+            ( { model | token = Just user.token }, Cmd.none )
+
+        AuthFail error ->
             Debug.crash "TODO"
 
 
 doRegister : { email : String, password : String } -> Cmd Msg
-doRegister state =
+doRegister =
+    doAuth "//localhost:3000/users"
+
+
+doLogin : { email : String, password : String } -> Cmd Msg
+doLogin =
+    doAuth "TODO"
+
+
+doAuth : String -> { email : String, password : String } -> Cmd Msg
+doAuth url state =
     { verb = "POST"
-    , headers =
-        [ ( "Content-Type", "application/json" )
-        , ( "Accept", "application/json" )
-        ]
-    , url = "//localhost:3000/users"
+    , url = url
+    , headers = headers
     , body = Http.string (Json.auth state)
     }
         |> Http.send Http.defaultSettings
         |> Http.fromJson User.fromAuthJson
-        |> Task.perform RegisterFail RegisterSuccess
+        |> Task.perform AuthFail AuthSuccess
+
+
+headers : List ( String, String )
+headers =
+    [ ( "Content-Type", "application/json" )
+    , ( "Accept", "application/json" )
+    ]

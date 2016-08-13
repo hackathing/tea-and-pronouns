@@ -17,8 +17,9 @@ type Status
 
 type Msg
     = Register { email : String, password : String }
-    | RegisterSuccess User
-    | RegisterFail Http.Error
+    | Login { email : String, password : String }
+    | AuthSuccess User
+    | AuthFail Http.Error
 
 
 init : Model
