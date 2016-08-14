@@ -14,4 +14,4 @@ root model =
             div [] [ text "Request in progress..." ]
 
         Error n ->
-            div [] [ n |> toString |> text ]
+            div [] [ text n ]

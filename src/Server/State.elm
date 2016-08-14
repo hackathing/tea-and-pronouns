@@ -21,7 +21,8 @@ type Msg
     = Register AuthCredentials
     | Login AuthCredentials
     | AuthSuccess User
-    | AuthFail Http.Error
+    | LoginFail Http.Error
+    | RegisterFail Http.Error
 
 
 init : Model

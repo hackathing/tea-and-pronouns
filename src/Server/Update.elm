@@ -12,30 +12,43 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Register state ->
-            ( model, doRegister state )
+            ( { model | status = RequestInProgress }
+            , doRegister state
+            )
 
         Login state ->
-            ( model, doLogin state )
+            ( { model | status = RequestInProgress }
+            , doLogin state
+            )
 
         AuthSuccess user ->
-            ( { model | token = Just user.token }, Cmd.none )
+            ( { model | token = Just user.token, status = None }
+            , Cmd.none
+            )
 
-        AuthFail error ->
-            Debug.crash "TODO"
+        LoginFail error ->
+            ( { model | status = Error "Unable to login" }
+            , Cmd.none
+            )
+
+        RegisterFail error ->
+            ( { model | status = Error "Unable to register" }
+            , Cmd.none
+            )
 
 
 doRegister : AuthCredentials -> Cmd Msg
 doRegister =
-    doAuth "//localhost:3000/users"
+    doAuth "//localhost:3000/users" RegisterFail
 
 
 doLogin : AuthCredentials -> Cmd Msg
 doLogin =
-    doAuth "TODO"
+    doAuth "TODO" LoginFail
 
 
-doAuth : String -> AuthCredentials -> Cmd Msg
-doAuth url state =
+doAuth : String -> (Http.Error -> Msg) -> AuthCredentials -> Cmd Msg
+doAuth url msg state =
     { verb = "POST"
     , url = url
     , headers = headers
@@ -43,7 +56,7 @@ doAuth url state =
     }
         |> Http.send Http.defaultSettings
         |> Http.fromJson User.fromAuthJson
-        |> Task.perform AuthFail AuthSuccess
+        |> Task.perform msg AuthSuccess
 
 
 headers : List ( String, String )
