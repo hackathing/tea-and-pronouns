@@ -5,6 +5,7 @@ module Auth.State
         , FieldName(Email, Password, PasswordAgain)
         , FieldState
         , Status(Valid, Invalid)
+        , AuthCredentials
         , Msg(..)
         , init
         )
@@ -20,14 +21,14 @@ type Page
     | Registration
 
 
-type alias FieldState =
-    { value : String, status : Status }
-
-
 type FieldName
     = Email
     | Password
     | PasswordAgain
+
+
+type alias FieldState =
+    { value : String, status : Status }
 
 
 type alias Model =
@@ -46,6 +47,12 @@ type Msg
     | Submit
     | DoRegister { email : String, password : String }
     | DoLogin { email : String, password : String }
+
+
+type alias AuthCredentials =
+    { email : String
+    , password : String
+    }
 
 
 init : Model

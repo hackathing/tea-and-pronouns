@@ -2,6 +2,7 @@ module Server.State exposing (Msg(..), Status(..), Model, init)
 
 import Http
 import User exposing (User)
+import Auth.State exposing (AuthCredentials)
 
 
 type alias Model =
@@ -17,8 +18,8 @@ type Status
 
 
 type Msg
-    = Register { email : String, password : String }
-    | Login { email : String, password : String }
+    = Register AuthCredentials
+    | Login AuthCredentials
     | AuthSuccess User
     | AuthFail Http.Error
 

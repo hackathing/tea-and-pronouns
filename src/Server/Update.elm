@@ -5,6 +5,7 @@ import Task
 import User
 import Server.Json as Json
 import Server.State exposing (..)
+import Auth.State exposing (AuthCredentials)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -23,17 +24,17 @@ update msg model =
             Debug.crash "TODO"
 
 
-doRegister : { email : String, password : String } -> Cmd Msg
+doRegister : AuthCredentials -> Cmd Msg
 doRegister =
     doAuth "//localhost:3000/users"
 
 
-doLogin : { email : String, password : String } -> Cmd Msg
+doLogin : AuthCredentials -> Cmd Msg
 doLogin =
     doAuth "TODO"
 
 
-doAuth : String -> { email : String, password : String } -> Cmd Msg
+doAuth : String -> AuthCredentials -> Cmd Msg
 doAuth url state =
     { verb = "POST"
     , url = url

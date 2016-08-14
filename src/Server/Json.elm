@@ -1,9 +1,10 @@
 module Server.Json exposing (..)
 
 import Json.Encode exposing (..)
+import Auth.State exposing (AuthCredentials)
 
 
-auth : { email : String, password : String } -> String
+auth : AuthCredentials -> String
 auth values =
     [ ( "user"
       , object
