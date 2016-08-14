@@ -5,6 +5,7 @@ import Html exposing (..)
 import State exposing (..)
 import Update exposing (..)
 import Auth.View
+import Server.View
 
 
 main : Program Flags
@@ -24,4 +25,7 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    App.map AuthMsg <| Auth.View.root model.auth
+    div []
+        [ Server.View.root model.server
+        , App.map AuthMsg <| Auth.View.root model.auth
+        ]

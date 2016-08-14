@@ -1,4 +1,4 @@
-module Server.State exposing (Msg(..), Model, init)
+module Server.State exposing (Msg(..), Status(..), Model, init)
 
 import Http
 import User exposing (User)
@@ -12,7 +12,8 @@ type alias Model =
 
 type Status
     = RequestInProgress
-    | Done
+    | Error String
+    | None
 
 
 type Msg
@@ -24,6 +25,6 @@ type Msg
 
 init : Model
 init =
-    { status = Done
+    { status = None
     , token = Nothing
     }
