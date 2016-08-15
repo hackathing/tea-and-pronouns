@@ -67,7 +67,7 @@ RSpec.describe UsersController, type: :controller do
       expect(response.status).to eq 201
       user = User.first
       expect(user.token).not_to eq nil
-    end  
+    end
 
   end
 end

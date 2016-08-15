@@ -68,16 +68,16 @@ checkPasswordLength password =
             | status = (Invalid "Password must be at least 8 characters")
         }
     else
-        password
+        { password | status = Valid }
 
 
 checkEmailFormat : FieldState -> FieldState
 checkEmailFormat email =
     if String.contains "@" email.value then
-        email
+        { email | status = Valid }
     else
         { email
-            | status = (Invalid "That doesn't look like a valid email!")
+            | status = (Invalid "That doesn't look like a valid email")
         }
 
 
@@ -85,7 +85,7 @@ checkPasswordAgain : FieldState -> FieldState -> FieldState
 checkPasswordAgain passwordAgain password =
     if passwordAgain.value /= password.value then
         { passwordAgain
-            | status = (Invalid "Passwords don't match!")
+            | status = (Invalid "Passwords don't match")
         }
     else
-        passwordAgain
+        { passwordAgain | status = Valid }
