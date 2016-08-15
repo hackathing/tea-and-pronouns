@@ -5,7 +5,7 @@ class UsersController < ApplicationController
       render status: 201, json: {
         user: {
           email: user.email,
-          token: "TODO: real token", # TODO
+          token: user.token,
           persisted: user.persisted?,
         },
       }

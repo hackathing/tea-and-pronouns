@@ -1,13 +1,26 @@
 T&P
 
-users should be able to sign up and log in
+To run server
 
-users should be able to add their tea and pronoun preferences
+```sh
+rails s
+```
+To start and run postgres database via docker:
 
-users should be able to view other user's tea and pronoun preferences
+```sh
+docker run postgres
+```
 
-People should be able to view and edit and join a group - groups should be able to overlap
+To drop, create and migrate database
 
-People should be able to display the tea preferences of users they have selected
+```sh
+rake db:drop:all db:create db:migrate
+```
 
-users should be able to add others tea and pronoun preferences only visible to them
+Notes on Fetch:
+So the problem is that if i do my_hash[:foo] when my_hash has no :foo key it returns nil
+And then if I chain on another [:bar] I get an error because nil doesn't implement a [] method
+So what if I used a method that returned something that did have that method on it instead, as a default value
+The thing I want to index into is a hash, so I could use an empty hash
+my_hash.fetch(:foo, {})[:bar] for example
+.fetch is like [], but it takes a second arg, which is a default value to use

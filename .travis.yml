@@ -1,0 +1,12 @@
+sudo: false
+
+language: ruby
+
+rvm:
+  - 2.2.2
+
+before_script:
+  - bundle exec rake db:create db:migrate
+
+notifications:
+  email: false

@@ -7,3 +7,4 @@ dist/
 /tmp/*
 .byebug_history
 public/*
+notes.md
