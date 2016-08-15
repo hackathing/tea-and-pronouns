@@ -1,6 +1,8 @@
 Tea and Pronouns
 ================
 
+[![Build Status](https://travis-ci.org/hackathing/tea-and-pronouns.svg?branch=master)](https://travis-ci.org/hackathing/tea-and-pronouns)
+
 ## Setup
 
 ```sh
