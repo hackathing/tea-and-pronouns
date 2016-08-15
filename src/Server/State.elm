@@ -1,7 +1,8 @@
-module Server.State exposing (Msg(..), Model, init)
+module Server.State exposing (Msg(..), Status(..), Model, init)
 
 import Http
 import User exposing (User)
+import Auth.State exposing (AuthCredentials)
 
 
 type alias Model =
@@ -12,17 +13,20 @@ type alias Model =
 
 type Status
     = RequestInProgress
-    | Done
+    | Error String
+    | None
 
 
 type Msg
-    = Register { email : String, password : String }
-    | RegisterSuccess User
+    = Register AuthCredentials
+    | Login AuthCredentials
+    | AuthSuccess User
+    | LoginFail Http.Error
     | RegisterFail Http.Error
 
 
 init : Model
 init =
-    { status = Done
+    { status = None
     , token = Nothing
     }

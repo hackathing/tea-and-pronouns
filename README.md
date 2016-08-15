@@ -12,16 +12,16 @@ bundle exec rake db:migrate # Migrate the database
 ## Backend dev
 
 ```sh
-make build          # Compile the front end
+make build          # Compile the frontend
 bundle exec rails s # Run the backend
 # Now go to localhost:3000
 ```
 
-## Front end dev
+## Frontend dev
 
 ```sh
 bundle exec rails s # Run the backend
-make start          # Run the front end dev server
+make start          # Run the frontend dev server
 # Now go to localhost:8080
 ```
 

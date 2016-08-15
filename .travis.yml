@@ -1,12 +1,20 @@
 sudo: false
 
-language: ruby
+language: node_js
+node_js:
+  - 4.4.5
 
-rvm:
-  - 2.2.2
+install:
+  - rvm use 2.2.2 --install --binary --fuzzy
+  - npm install elm --global
+  - make install
 
 before_script:
   - bundle exec rake db:create db:migrate
+
+script:
+  - bundle exec rake
+  - make test
 
 notifications:
   email: false

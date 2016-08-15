@@ -5,28 +5,62 @@ import Task
 import User
 import Server.Json as Json
 import Server.State exposing (..)
+import Auth.State exposing (AuthCredentials)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Register state ->
-            ( model, doRegister state )
+            ( { model | status = RequestInProgress }
+            , doRegister state
+            )
 
-        RegisterSuccess user ->
-            Debug.crash "TODO"
+        Login state ->
+            ( { model | status = RequestInProgress }
+            , doLogin state
+            )
+
+        AuthSuccess user ->
+            ( { model | token = Just user.token, status = None }
+            , Cmd.none
+            )
+
+        LoginFail error ->
+            ( { model | status = Error "Unable to login" }
+            , Cmd.none
+            )
 
         RegisterFail error ->
-            Debug.crash "TODO"
+            ( { model | status = Error "Unable to register" }
+            , Cmd.none
+            )
 
 
-doRegister : { email : String, password : String } -> Cmd Msg
-doRegister state =
-    let
-        payload =
-            Http.string (Json.auth state)
+doRegister : AuthCredentials -> Cmd Msg
+doRegister =
+    doAuth "//localhost:3000/users" RegisterFail
 
-        cmd =
-            Http.post User.fromAuthJson "//localhost:3000/users" payload
-    in
-        Task.perform RegisterFail RegisterSuccess cmd
+
+doLogin : AuthCredentials -> Cmd Msg
+doLogin =
+    doAuth "TODO" LoginFail
+
+
+doAuth : String -> (Http.Error -> Msg) -> AuthCredentials -> Cmd Msg
+doAuth url msg state =
+    { verb = "POST"
+    , url = url
+    , headers = headers
+    , body = Http.string (Json.auth state)
+    }
+        |> Http.send Http.defaultSettings
+        |> Http.fromJson User.fromAuthJson
+        |> Task.perform msg AuthSuccess
+
+
+headers : List ( String, String )
+headers =
+    [ ( "Content-Type", "application/json" )
+    , ( "Accept", "application/json" )
+    ]

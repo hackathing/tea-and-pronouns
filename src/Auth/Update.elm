@@ -29,22 +29,31 @@ update msg model =
         DoRegister _ ->
             Debug.crash "TODO. Use this for disabling button"
 
+        DoLogin _ ->
+            Debug.crash "TODO. Use this for disabling button"
+
         Submit ->
-            maybeLogin model
+            maybeLoginOrRegister model
 
 
-maybeLogin : Model -> ( Model, Cmd Msg )
-maybeLogin model =
+maybeLoginOrRegister : Model -> ( Model, Cmd Msg )
+maybeLoginOrRegister model =
     let
         newModel =
             validate model
+
+        msg =
+            if model.page == Registration then
+                DoRegister
+            else
+                DoLogin
 
         cmd =
             if isValid newModel then
                 { email = model.email.value
                 , password = model.password.value
                 }
-                    |> DoRegister
+                    |> msg
                     |> sendMsg
             else
                 Cmd.none
