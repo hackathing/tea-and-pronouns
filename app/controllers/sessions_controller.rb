@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
+
   def create
-    user = User.find_by(email: params[:user][:email])
+    user = User.find_by(email: params.fetch(:user, {})[:email])
     if user && user.authenticate(params[:user][:password])
       render status: 201, json: {
         user: {

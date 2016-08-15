@@ -52,7 +52,7 @@ RSpec.describe SessionsController, type: :controller do
       expect(response.status).to eq 400
     end
 
-    xit "does not create a session if no params given" do
+    it "does not create a session if no params given" do
       user = User.create!(
       email: "hello@world.com",
       password: "password123",
