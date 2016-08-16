@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class RegistrationController < ApplicationController
   skip_before_action :authenticate! 
 
   def create

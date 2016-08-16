@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe RegistrationController, type: :controller do
 
   describe "POST create" do
     it "creates a new User" do

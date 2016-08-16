@@ -8,7 +8,7 @@ rails s
 To start and run postgres database via docker:
 
 ```sh
-docker run postgres
+docker start postgres
 ```
 
 To drop, create and migrate database
