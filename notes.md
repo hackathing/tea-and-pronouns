@@ -24,3 +24,17 @@ So what if I used a method that returned something that did have that method on 
 The thing I want to index into is a hash, so I could use an empty hash
 my_hash.fetch(:foo, {})[:bar] for example
 .fetch is like [], but it takes a second arg, which is a default value to use
+
+
+  attr_reader :current_user
+
+  def current_user
+    @current_user
+  end
+
+  def my_attr_reader(field_name)
+    define_method(field_name) do
+      get_instance_variable(field_name)
+    end
+  end
+
