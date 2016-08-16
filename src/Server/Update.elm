@@ -39,7 +39,7 @@ update msg model =
 
 doRegister : AuthCredentials -> Cmd Msg
 doRegister =
-    doAuth "//localhost:3000/users" RegisterFail
+    doAuth "//localhost:3000/register" RegisterFail
 
 
 doLogin : AuthCredentials -> Cmd Msg
