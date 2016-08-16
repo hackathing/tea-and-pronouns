@@ -75,4 +75,15 @@ RSpec.describe User, type: :model do
     expect(user.password_digest).not_to eq nil
     expect(user.authenticate('password')).to eq user
   end
+
+  it "does not require password when updating user, if password is not given" do
+    User.create!(
+      email: "hello@world.com",
+      password: "password",
+    )
+    user = User.find_by(email: "hello@world.com")
+    user.update(:email => "goodbye@world.com")
+    expect(user).to be_valid
+    expect(user.email).to eq "goodbye@world.com"
+  end
 end
