@@ -1,5 +1,5 @@
-class UsersController < ApplicationController
-  skip_before_action :authenticate! 
+class RegistrationsController < ApplicationController
+  skip_before_action :token_authenticate! 
 
   def create
     user = User.new(user_params)
