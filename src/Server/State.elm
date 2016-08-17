@@ -8,6 +8,7 @@ import Auth.State exposing (AuthCredentials)
 type alias Model =
     { status : Status
     , token : Maybe String
+    , routes : Routes
     }
 
 
@@ -25,8 +26,22 @@ type Msg
     | RegisterFail Http.Error
 
 
+type alias Routes =
+    { login : String
+    , register : String
+    }
+
+
+routes : String -> Routes
+routes host =
+    { login = host ++ "/login"
+    , register = host ++ "/register"
+    }
+
+
 init : Model
 init =
     { status = Ready
     , token = Nothing
+    , routes = routes "//localhost:3000"
     }

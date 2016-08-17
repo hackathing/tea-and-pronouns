@@ -272,6 +272,7 @@ validModel =
     , email = { value = "louis@example.eu", status = Valid }
     , password = { value = "hunter99", status = Valid }
     , passwordAgain = { value = "hunter99", status = Valid }
+    , status = Ready
     }
 
 

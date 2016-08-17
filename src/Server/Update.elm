@@ -13,12 +13,12 @@ update msg model =
     case msg of
         Register state ->
             ( { model | status = Waiting }
-            , doRegister state
+            , doRegister model state
             )
 
         Login state ->
             ( { model | status = Waiting }
-            , doLogin state
+            , doLogin model state
             )
 
         AuthSuccess user ->
@@ -37,14 +37,14 @@ update msg model =
             )
 
 
-doRegister : AuthCredentials -> Cmd Msg
-doRegister =
-    doAuth "//localhost:3000/register" RegisterFail
+doRegister : Model -> AuthCredentials -> Cmd Msg
+doRegister model =
+    doAuth model.routes.register RegisterFail
 
 
-doLogin : AuthCredentials -> Cmd Msg
-doLogin =
-    doAuth "TODO" LoginFail
+doLogin : Model -> AuthCredentials -> Cmd Msg
+doLogin model =
+    doAuth model.routes.login LoginFail
 
 
 doAuth : String -> (Http.Error -> Msg) -> AuthCredentials -> Cmd Msg
