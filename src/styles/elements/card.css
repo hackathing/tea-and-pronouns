@@ -1,0 +1,11 @@
+.card {
+  /* Shape */
+  border-radius: var(--border-radius);
+  padding: 40px 25px;
+  display: inline-block;
+  margin-right: auto;
+  margin-left: auto;
+
+  /* Color */
+  background-color: var(--color-white);
+}
