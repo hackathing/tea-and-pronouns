@@ -2,7 +2,8 @@ var path              = require('path');
 var webpack           = require('webpack');
 var merge             = require('webpack-merge');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var autoprefixer      = require('autoprefixer');
+var cssimport         = require('postcss-import');
+var cssnext           = require('postcss-cssnext');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var inProd = process.env.NODE_ENV === "production";
@@ -25,11 +26,10 @@ var commonConfig = {
         loader: 'file-loader'
       },
       {
-        test: /\.(css|scss)$/,
+        test: /\.(css)$/,
         loader: ExtractTextPlugin.extract('style-loader', [
           'css-loader',
           'postcss-loader',
-          'sass-loader'
         ])
       }
     ]
@@ -49,8 +49,11 @@ var commonConfig = {
     new ExtractTextPlugin('./[hash].css', { allChunks: true }),
   ],
 
-  postcss: [ autoprefixer( { browsers: ['last 2 versions'] } ) ],
-}
+  postcss: (webpack) => [
+    cssimport({ path: "./src/styles/", addDependencyTo: webpack }),
+    cssnext(),
+  ],
+};
 
 if (process.env.NODE_ENV === 'development') {
   console.log('Serving locally...');

@@ -1,0 +1,5 @@
+@import "constants/colors.css";
+
+body {
+  background-color: var(--main-color);
+}
