@@ -13,4 +13,5 @@ class User < ApplicationRecord
   validates :password,  length: { minimum: 8 },
                         allow_nil: true
 
+  validates :name, presence: true
 end

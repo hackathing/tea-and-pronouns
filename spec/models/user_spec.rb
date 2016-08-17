@@ -6,12 +6,23 @@ RSpec.describe User, type: :model do
     User.create!(
       email: "hello@world.com",
       password: "password",
+      name: "Alice",
     )
+  end
+
+  it 'is invalid without a name' do
+    user = User.new(
+      password: "some valid password",
+      email: "amy@alice.com",
+    )
+    expect(user).not_to be_valid
+    expect(user.errors[:name]).to include "can't be blank"
   end
 
   it 'is invalid without an email' do
     user = User.new(
       password: "some valid password",
+      name: "Alice",
     )
     expect(user).not_to be_valid
     expect(user.errors[:email]).to include "can't be blank"
@@ -21,6 +32,7 @@ RSpec.describe User, type: :model do
     user = User.new(
       email: "helloworld.com",
       password: "password",
+      name: "Alice",
     )
     expect(user).not_to be_valid
     expect(user.errors[:email]).to include(
@@ -32,6 +44,7 @@ RSpec.describe User, type: :model do
     user = User.create!(
       email: "HELLO@WORLD.COM",
       password: "password",
+      name: "Alice",
     )
     expect(user.email).to eq "hello@world.com"
   end
@@ -40,10 +53,12 @@ RSpec.describe User, type: :model do
     user = User.create!(
       email: "hello@world.com",
       password: "password",
+      name: "Alice",
     )
     user2 = User.create(
       email: "hello@world.com",
       password: "password",
+      name: "Alice",
     )
     expect(user).to be_valid
     expect(user2).not_to be_valid
@@ -55,6 +70,7 @@ RSpec.describe User, type: :model do
   it 'is invalid without a password' do
     user = User.new(
       email: "hello@world.com",
+      name: "Alice",
     )
     expect(user).not_to be_valid
     expect(user.errors[:password]).to include "can't be blank"
@@ -64,6 +80,7 @@ RSpec.describe User, type: :model do
     user = User.new(
       email: "hello@world.com",
       password: "123",
+      name: "Alice",
     )
     expect(user).not_to be_valid
     expect(user.errors[:password]).to include(
@@ -71,11 +88,11 @@ RSpec.describe User, type: :model do
     )
   end
 
-
   it 'has a secure password' do
     User.create!(
       email: "hello@world.com",
-      password: "password"
+      password: "password",
+      name: "Alice",
     )
     user = User.find_by(email: "hello@world.com")
     expect(user.password).to eq nil
@@ -87,6 +104,7 @@ RSpec.describe User, type: :model do
     User.create!(
       email: "hello@world.com",
       password: "password",
+      name: "Alice",
     )
     user = User.find_by(email: "hello@world.com")
     user.update(:email => "goodbye@world.com")
@@ -99,6 +117,7 @@ RSpec.describe User, type: :model do
     User.create!(
       email: "hello@world.com",
       password: "password",
+      name: "Alice",
     )
     user = User.find_by(email: "hello@world.com")
     user.preferences.update("tea" => "chai")

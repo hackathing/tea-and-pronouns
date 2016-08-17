@@ -6,6 +6,7 @@ RSpec.describe ProfileController, type: :controller do
     User.create!(
       email: "hello@world.com",
       password: "password",
+      name: "Alice",
     )
   end
 
@@ -17,7 +18,9 @@ RSpec.describe ProfileController, type: :controller do
       expect(response.status).to eq 200
       expect(response.body).to be_json_eql({
         user: {
-          email: "hello@world.com"
+          email: "hello@world.com",
+          name: "Alice",
+          id: user.id,
         }
       }.to_json)
     end
@@ -31,7 +34,18 @@ RSpec.describe ProfileController, type: :controller do
   end
 
   describe "PATCH update" do
-    it "allows user to update email" do
+    it "allows user to update name" do
+      user = new_user
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+      patch :update, params: {
+        profile: {
+          name: "Al",
+        }
+      }
+      user.reload
+      expect(user.name).to eq "Al"
+    end
+ it "allows user to update email" do
       user = new_user
       @request.env["HTTP_AUTHORIZATION"] = user.token
       patch :update, params: {

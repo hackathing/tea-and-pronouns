@@ -3,7 +3,8 @@ class PreferencesController < ApplicationController
   def show
     user = @current_user
     render status: 200, json: {
-        preferences: user.preferences
+        preferences: user.preferences,
+        id: user.id
     }
   end
 
@@ -12,6 +13,7 @@ class PreferencesController < ApplicationController
     if user.preferences.merge!(user_params)
       render status: 200, json: {
           preferences: user.preferences,
+          id: user.id,
         }
       user.save!
     else

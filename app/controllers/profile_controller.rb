@@ -4,7 +4,9 @@ class ProfileController < ApplicationController
     user = @current_user
     render status: 200, json: {
       user: {
+        name: user.name,
         email: user.email,
+        id: user.id,
       }
     }
   end
@@ -14,6 +16,8 @@ class ProfileController < ApplicationController
     if user.update(user_params)
       render status: 200, json: {
         profile: {
+          name: user.name,
+          id: user.id,
           email: user.email,
           persisted: user.persisted?,
         }
@@ -30,7 +34,7 @@ class ProfileController < ApplicationController
   private
 
   def user_params
-    params.fetch(:profile, {}).permit(:email, :password)
+    params.fetch(:profile, {}).permit(:name, :email, :password)
   end
 
 end

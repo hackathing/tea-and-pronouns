@@ -6,7 +6,9 @@ class RegistrationsController < ApplicationController
     if user.save
       render status: 201, json: {
         user: {
+          name: user.name,
           email: user.email,
+          id: user.id,
           token: user.token,
           persisted: user.persisted?,
         },
@@ -23,6 +25,6 @@ class RegistrationsController < ApplicationController
   private
 
   def user_params
-    params.fetch(:user, {}).permit(:email, :password)
+    params.fetch(:user, {}).permit(:name, :email, :password)
   end
 end
