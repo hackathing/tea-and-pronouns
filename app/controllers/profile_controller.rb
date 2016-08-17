@@ -13,7 +13,7 @@ class ProfileController < ApplicationController
     user = @current_user
     if user.update(user_params)
       render status: 200, json: {
-        user: {
+        profile: {
           email: user.email,
           persisted: user.persisted?,
         }
@@ -30,7 +30,7 @@ class ProfileController < ApplicationController
   private
 
   def user_params
-    params.fetch(:user, {}).permit(:email, :password)
+    params.fetch(:profile, {}).permit(:email, :password)
   end
 
 end

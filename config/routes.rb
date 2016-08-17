@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   get "/test" => "tests#show"
   get "/profile" => "profile#show"
   patch "/profile" => "profile#update"
+  get "/preferences" => "preferences#show"
+  patch "/preferences" => "preferences#update"
 end
