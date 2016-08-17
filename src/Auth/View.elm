@@ -2,24 +2,30 @@ module Auth.View exposing (root)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
+import Html.Events exposing (onClick, onInput, onSubmit)
 import Auth.State exposing (..)
 
 
 root : Model -> Html Msg
 root model =
-    case model.page of
-        Login ->
-            login model
+    div [ class "auth__card card" ]
+        [ case model.page of
+            Login ->
+                login model
 
-        Registration ->
-            registration model
+            Registration ->
+                registration model
+        ]
 
 
 login : Model -> Html Msg
 login model =
-    div []
-        [ h1 [] [ text "Login" ]
+    Html.form
+        [ onSubmit Submit
+        , autocomplete True
+        , id "login-form"
+        ]
+        [ h1 [ class "auth__title" ] [ text "Login" ]
         , emailField model
         , passwordField model
         , submitButton model.status
@@ -29,8 +35,12 @@ login model =
 
 registration : Model -> Html Msg
 registration model =
-    div []
-        [ h1 [] [ text "Registration" ]
+    Html.form
+        [ onSubmit Submit
+        , autocomplete True
+        , id "registration-form"
+        ]
+        [ h1 [ class "auth__title" ] [ text "Registration" ]
         , emailField model
         , passwordField model
         , passwordAgainField model
@@ -41,43 +51,48 @@ registration model =
 
 submitButton : FormStatus -> Html Msg
 submitButton status =
-    case status of
-        Ready ->
-            button [ onClick Submit ] [ text "Submit" ]
-
-        Waiting ->
-            button [ disabled True ] [ text "Submit" ]
+    button
+        [ disabled (status == Waiting)
+        , class "submit-button"
+        ]
+        [ text "Submit" ]
 
 
 emailField : Model -> Html Msg
 emailField model =
-    div []
-        [ label []
-            [ text "Email" ]
-        , input [ onInput ChangeEmail ]
-            [ text model.email.value ]
+    div [ class "field-group" ]
+        [ label [] [ text "Email" ]
+        , input
+            [ onInput ChangeEmail, autocomplete True, value model.email.value ]
+            []
         , errorDisplay model.email
         ]
 
 
 passwordField : Model -> Html Msg
 passwordField model =
-    div []
-        [ label []
-            [ text "Password" ]
-        , input [ onInput ChangePassword ]
-            [ text model.password.value ]
+    div [ class "field-group" ]
+        [ label [] [ text "Password" ]
+        , input
+            [ type' "password"
+            , onInput ChangePassword
+            , value model.password.value
+            ]
+            []
         , errorDisplay model.password
         ]
 
 
 passwordAgainField : Model -> Html Msg
 passwordAgainField model =
-    div []
-        [ label []
-            [ text "Password Confirmation" ]
-        , input [ onInput ChangePasswordAgain ]
-            [ text model.passwordAgain.value ]
+    div [ class "field-group" ]
+        [ label [] [ text "Password Confirmation" ]
+        , input
+            [ type' "password"
+            , onInput ChangePasswordAgain
+            , value model.passwordAgain.value
+            ]
+            []
         , errorDisplay model.passwordAgain
         ]
 
@@ -95,4 +110,7 @@ errorDisplay field =
 
 pageSwitch : Page -> String -> Html Msg
 pageSwitch page prompt =
-    a [ href "#", onClick <| ChangePage page ] [ text prompt ]
+    div [ class "auth__page-switch" ]
+        [ a [ href "#", onClick <| ChangePage page ]
+            [ text prompt ]
+        ]

@@ -1,3 +1,8 @@
 :root {
-  --main-color: hotpink;
+  --color-white: white;
+  --color-off-white: #ebf0ed;
+  --color-primary: #ff9500;
+  --color-secondary: #045966;
+  --color-grey: #5d5d5d;
+  --color-light-grey: #8e8e93;
 }

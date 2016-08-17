@@ -1,5 +1,14 @@
 @import "constants/colors.css";
+@import "constants/sizes.css";
 
-body {
-  background-color: var(--main-color);
-}
+@import "base/typography.css";
+@import "base/body.css";
+@import "base/sizing.css";
+
+@import "elements/inputs.css";
+@import "elements/card.css";
+@import "elements/headings.css";
+@import "elements/buttons.css";
+@import "elements/anchors.css";
+
+@import "views/auth.css";
