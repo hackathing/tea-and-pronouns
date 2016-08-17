@@ -12,9 +12,9 @@ type alias Model =
 
 
 type Status
-    = RequestInProgress
-    | Error String
-    | None
+    = Error String
+    | Waiting
+    | Ready
 
 
 type Msg
@@ -27,6 +27,6 @@ type Msg
 
 init : Model
 init =
-    { status = None
+    { status = Ready
     , token = Nothing
     }

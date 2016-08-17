@@ -7,10 +7,10 @@ import Server.State exposing (..)
 root : Model -> Html a
 root model =
     case model.status of
-        None ->
+        Ready ->
             div [] []
 
-        RequestInProgress ->
+        Waiting ->
             div [] [ text "Request in progress..." ]
 
         Error n ->

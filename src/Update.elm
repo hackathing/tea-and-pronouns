@@ -10,6 +10,12 @@ import Server.State
 doUpdate : Msg -> Model -> ( Model, Cmd Msg )
 doUpdate msg model =
     case msg of
+        ServerMsg (Server.State.RegisterFail state) ->
+            handleAuthFail (Server.State.RegisterFail state) model
+
+        ServerMsg (Server.State.LoginFail state) ->
+            handleAuthFail (Server.State.RegisterFail state) model
+
         ServerMsg msg ->
             updateServer msg model
 
@@ -27,6 +33,15 @@ doUpdate msg model =
                 ( { model | auth = authModel }
                 , Cmd.map AuthMsg cmd
                 )
+
+
+handleAuthFail : Server.State.Msg -> Model -> ( Model, Cmd Msg )
+handleAuthFail msg model =
+    let
+        ( authModel, _ ) =
+            Auth.update Auth.State.AuthFail model.auth
+    in
+        updateServer msg { model | auth = authModel }
 
 
 updateServer : Server.State.Msg -> Model -> ( Model, Cmd Msg )
