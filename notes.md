@@ -38,3 +38,8 @@ my_hash.fetch(:foo, {})[:bar] for example
     end
   end
 
+once created hte jsonb preferences using
+user = User.create({email: "email@email.com", password: "password", preferences: {tea: "black", milk: true, sugar: 2}})
+
+you can then add show preferences with user.preferences and add them using using user.preferences["smug"] = "very, yes"
+for example and as its type is a hash you can also do user.preferences.merge("coffee" => false, "sizes" => [1,2,3]) for example but you must use user.save!
