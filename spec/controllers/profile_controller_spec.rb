@@ -35,7 +35,7 @@ RSpec.describe ProfileController, type: :controller do
       user = new_user
       @request.env["HTTP_AUTHORIZATION"] = user.token
       patch :update, params: {
-        user: {
+        profile: {
           email: "goodbye@world.com",
         }
       }
@@ -46,7 +46,7 @@ RSpec.describe ProfileController, type: :controller do
       user = new_user
       @request.env["HTTP_AUTHORIZATION"] = user.token
       patch :update, params: {
-        user: {
+        profile: {
           password: "newpassword",
         }
       }
