@@ -12,17 +12,17 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Register state ->
-            ( { model | status = RequestInProgress }
+            ( { model | status = Waiting }
             , doRegister state
             )
 
         Login state ->
-            ( { model | status = RequestInProgress }
+            ( { model | status = Waiting }
             , doLogin state
             )
 
         AuthSuccess user ->
-            ( { model | token = Just user.token, status = None }
+            ( { model | token = Just user.token, status = Ready }
             , Cmd.none
             )
 

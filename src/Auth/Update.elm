@@ -32,6 +32,11 @@ update msg model =
         DoLogin _ ->
             Debug.crash "TODO. Use this for disabling button"
 
+        AuthFail ->
+            ( { model | status = Ready }
+            , Cmd.none
+            )
+
         Submit ->
             maybeLoginOrRegister model
 
@@ -47,18 +52,16 @@ maybeLoginOrRegister model =
                 DoRegister
             else
                 DoLogin
-
-        cmd =
-            if isValid newModel then
-                { email = model.email.value
-                , password = model.password.value
-                }
-                    |> msg
-                    |> sendMsg
-            else
-                Cmd.none
     in
-        ( newModel, cmd )
+        if isValid newModel then
+            { email = model.email.value
+            , password = model.password.value
+            }
+                |> msg
+                |> sendMsg
+                |> \cmd -> ( { newModel | status = Waiting }, cmd )
+        else
+            ( newModel, Cmd.none )
 
 
 setValue : String -> FieldState -> FieldState

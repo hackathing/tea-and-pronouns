@@ -4,16 +4,22 @@ module Auth.State
         , Page(Login, Registration)
         , FieldName(Email, Password, PasswordAgain)
         , FieldState
-        , Status(Valid, Invalid)
+        , FieldStatus(Valid, Invalid)
+        , FormStatus(Ready, Waiting)
         , AuthCredentials
         , Msg(..)
         , init
         )
 
 
-type Status
+type FieldStatus
     = Valid
     | Invalid String
+
+
+type FormStatus
+    = Ready
+    | Waiting
 
 
 type Page
@@ -28,7 +34,7 @@ type FieldName
 
 
 type alias FieldState =
-    { value : String, status : Status }
+    { value : String, status : FieldStatus }
 
 
 type alias Model =
@@ -36,6 +42,7 @@ type alias Model =
     , email : FieldState
     , password : FieldState
     , passwordAgain : FieldState
+    , status : FormStatus
     }
 
 
@@ -47,6 +54,7 @@ type Msg
     | Submit
     | DoRegister { email : String, password : String }
     | DoLogin { email : String, password : String }
+    | AuthFail
 
 
 type alias AuthCredentials =
@@ -61,6 +69,7 @@ init =
     , email = fieldInit
     , password = fieldInit
     , passwordAgain = fieldInit
+    , status = Ready
     }
 
 

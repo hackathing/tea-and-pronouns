@@ -22,7 +22,7 @@ login model =
         [ h1 [] [ text "Login" ]
         , emailField model
         , passwordField model
-        , button [ onClick Submit ] [ text "Submit" ]
+        , submitButton model.status
         , pageSwitch Registration "Need to create an account?"
         ]
 
@@ -34,9 +34,19 @@ registration model =
         , emailField model
         , passwordField model
         , passwordAgainField model
-        , button [ onClick Submit ] [ text "Submit" ]
+        , submitButton model.status
         , pageSwitch Login "Already have an account?"
         ]
+
+
+submitButton : FormStatus -> Html Msg
+submitButton status =
+    case status of
+        Ready ->
+            button [ onClick Submit ] [ text "Submit" ]
+
+        Waiting ->
+            button [ disabled True ] [ text "Submit" ]
 
 
 emailField : Model -> Html Msg
