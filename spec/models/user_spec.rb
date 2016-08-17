@@ -2,6 +2,13 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
+  def new_user
+    User.create!(
+      email: "hello@world.com",
+      password: "password",
+    )
+  end
+
   it 'is invalid without an email' do
     user = User.new(
       password: "some valid password",
@@ -83,7 +90,22 @@ RSpec.describe User, type: :model do
     )
     user = User.find_by(email: "hello@world.com")
     user.update(:email => "goodbye@world.com")
+    user.reload
     expect(user).to be_valid
     expect(user.email).to eq "goodbye@world.com"
+  end
+
+  it "allows user to add preferences" do
+    User.create!(
+      email: "hello@world.com",
+      password: "password",
+    )
+    user = User.find_by(email: "hello@world.com")
+    user.preferences.update("tea" => "chai")
+    user.save!
+    user.reload
+    expect(user.preferences).to eq(
+      "tea" => "chai"
+    )
   end
 end
