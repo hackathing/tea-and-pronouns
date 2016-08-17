@@ -1,4 +1,5 @@
-require("./styles/main.scss");
+require("normalize.css");
+require("./styles/main.css");
 
 // Flag variables are injects via Webpack DefinePlugin
 var flags = {
