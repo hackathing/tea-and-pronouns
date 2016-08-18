@@ -2,11 +2,8 @@ class ProfileController < ApplicationController
 
   def show
     user = @current_user
-    render status: 200, json: {
-      user: {
-        email: user.email,
-      }
-    }
+    render status: 200, 
+      json: profile_success(user)
   end
 
   def update
@@ -33,4 +30,11 @@ class ProfileController < ApplicationController
     params.fetch(:profile, {}).permit(:email, :password)
   end
 
+  def profile_success(user)
+    {
+      user: {
+        email: user.email,
+      }
+    }
+  end
 end
