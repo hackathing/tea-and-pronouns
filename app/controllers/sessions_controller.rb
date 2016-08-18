@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
   def login_success(user)
     {
       user: {
-        email: user.email,
+        id: user.id,
         token: user.token,
         persisted: user.persisted?,
       },

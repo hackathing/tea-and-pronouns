@@ -26,7 +26,8 @@ class PreferencesController < ApplicationController
 
   def preferences_success(user)
     {
-      preferences: user.preferences
+      preferences: user.preferences,
+      id: user.id
     }
   end
 

@@ -16,15 +16,17 @@ class RegistrationsController < ApplicationController
 
   def user_params
     params.fetch(:user, {})
-    .permit(:email, :password)
+    .permit(:name, :email, :password)
   end
 
   def registration_success(user)
     {
-      user: {
-        email: user.email,
-        token: user.token,
-        persisted: user.persisted?,
+        user: {
+          name: user.name,
+          email: user.email,
+          id: user.id,
+          token: user.token,
+          persisted: user.persisted?,
       },
     }
   end

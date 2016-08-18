@@ -9,31 +9,35 @@ class ProfileController < ApplicationController
   def update
     user = @current_user
     if user.update(user_params)
-      render status: 200, json: {
-        profile: {
-          email: user.email,
-          persisted: user.persisted?,
-        }
-      }
+      render status: 200, 
+        json: profile_success(user)
     else
-      render status: 400, json: {
-        errors: {
-          user: user.errors,
-        }
-      }
+      render status: 400, 
+        json: user_errors(user)
     end
   end
 
   private
 
   def user_params
-    params.fetch(:profile, {}).permit(:email, :password)
+    params.fetch(:profile, {}).permit(:name, :email, :password)
   end
 
   def profile_success(user)
     {
-      user: {
+      profile: {
+        name: user.name,
         email: user.email,
+        id: user.id,
+        persisted: user.persisted?,
+      }
+    }
+  end
+
+  def user_errors(user)
+    {
+      errors: {
+        user: user.errors,
       }
     }
   end
