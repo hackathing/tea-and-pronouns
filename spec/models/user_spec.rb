@@ -10,6 +10,12 @@ RSpec.describe User, type: :model do
     )
   end
 
+  def new_group
+    Group.create!(
+      name: "IHOP",
+    )
+  end
+
   it 'is invalid without a name' do
     user = User.new(
       password: "some valid password",
@@ -126,5 +132,16 @@ RSpec.describe User, type: :model do
     expect(user.preferences).to eq(
       "tea" => "chai"
     )
+  end
+
+  it "can have groups belong to it" do
+    group = new_group
+    user = new_user
+    expect(user.groups.count).to eq 0
+    user.groups << group
+    user.reload
+    expect(user.groups.count).to eq 1
+    expect(user.groups.pluck(:name)).to eq ["IHOP"]
+    expect(user.groups).to eq [group]
   end
 end

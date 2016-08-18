@@ -43,3 +43,23 @@ user = User.create({email: "email@email.com", password: "password", preferences:
 
 you can then add show preferences with user.preferences and add them using using user.preferences["smug"] = "very, yes"
 for example and as its type is a hash you can also do user.preferences.merge("coffee" => false, "sizes" => [1,2,3]) for example but you must use user.save!
+
+
+SYNTAX NOTE
+so with ruby, if a symbol ( :symbol ) is ALSO a key, you can move the colon to the end and forget about the hashrocket ( => )
+so :symbol => :value
+is the same as symbol: :value
+
+and the second way is the correct way. Now.
+
+NB
+A symbol is sort of like a string that is used for naming things. Like an atom in elixir or clojure
+
+Using the groovy to_proc oprator with map:
+group.users.map(&:name)
+
+Getting an array of keys from database
+group.users.pluck(:name)
+
+REPL
+use rails c for a rails console but use bundle exec rails c for an amazing console tied to your app and database wooohooo

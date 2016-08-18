@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_many :group_memberships
+  has_many :groups, through: :group_memberships
+
   before_save { self.email = email.downcase }
 
   has_secure_password
