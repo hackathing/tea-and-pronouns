@@ -45,4 +45,6 @@ ActiveRecord::Schema.define(version: 20160806173907) do
     t.index ["token"], name: "index_users_on_token", unique: true, using: :btree
   end
 
+  add_foreign_key "group_memberships", "groups"
+  add_foreign_key "group_memberships", "users"
 end

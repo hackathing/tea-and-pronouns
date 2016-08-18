@@ -63,3 +63,7 @@ group.users.pluck(:name)
 
 REPL
 use rails c for a rails console but use bundle exec rails c for an amazing console tied to your app and database wooohooo
+
+ADD A FOREIGN KEY constraint MOFO
+because it isnt automatic for joined tables which means that you could say have a table that has many x and y which belongs to x and then delete x but still have this random y floating around so in our case we could have a user Alice  being part of group ihop and there would be a group_membership called alicetoihop but if we delete user Alice we still have the bloody alicetoihop floating around being annoying. Foreign key constraints make this NOT happen, which is good. They make sure you have referential integrity
+

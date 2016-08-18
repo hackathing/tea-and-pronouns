@@ -27,5 +27,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.timestamps
     end
     add_index(:group_memberships, [:user_id, :group_id], unique: true)
+    add_foreign_key(:group_memberships, :groups)
+    add_foreign_key(:group_memberships, :users)
   end
 end
