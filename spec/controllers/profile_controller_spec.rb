@@ -17,10 +17,11 @@ RSpec.describe ProfileController, type: :controller do
       get :show
       expect(response.status).to eq 200
       expect(response.body).to be_json_eql({
-        user: {
-          email: "hello@world.com",
+        profile: {
           name: "Alice",
+          email: "hello@world.com",
           id: user.id,
+          persisted: true,
         }
       }.to_json)
     end
