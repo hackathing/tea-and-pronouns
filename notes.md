@@ -43,3 +43,27 @@ user = User.create({email: "email@email.com", password: "password", preferences:
 
 you can then add show preferences with user.preferences and add them using using user.preferences["smug"] = "very, yes"
 for example and as its type is a hash you can also do user.preferences.merge("coffee" => false, "sizes" => [1,2,3]) for example but you must use user.save!
+
+
+SYNTAX NOTE
+so with ruby, if a symbol ( :symbol ) is ALSO a key, you can move the colon to the end and forget about the hashrocket ( => )
+so :symbol => :value
+is the same as symbol: :value
+
+and the second way is the correct way. Now.
+
+NB
+A symbol is sort of like a string that is used for naming things. Like an atom in elixir or clojure
+
+Using the groovy to_proc oprator with map:
+group.users.map(&:name)
+
+Getting an array of keys from database
+group.users.pluck(:name)
+
+REPL
+use rails c for a rails console but use bundle exec rails c for an amazing console tied to your app and database wooohooo
+
+ADD A FOREIGN KEY constraint MOFO
+because it isnt automatic for joined tables which means that you could say have a table that has many x and y which belongs to x and then delete x but still have this random y floating around so in our case we could have a user Alice  being part of group ihop and there would be a group_membership called alicetoihop but if we delete user Alice we still have the bloody alicetoihop floating around being annoying. Foreign key constraints make this NOT happen, which is good. They make sure you have referential integrity
+
