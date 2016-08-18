@@ -6,6 +6,7 @@ RSpec.describe PreferencesController, type: :controller do
     User.create!(
       email: "hello@world.com",
       password: "password",
+      name: "Alice",
       preferences: {
         tea: "chai",
         milk: true,

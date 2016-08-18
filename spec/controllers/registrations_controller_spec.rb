@@ -9,6 +9,7 @@ RSpec.describe RegistrationsController, type: :controller do
         user: {
           email: "hello@world.com",
           password: "password123",
+          name: "Alice",
         }
       }
       expect(User.count).to eq 1
@@ -22,6 +23,7 @@ RSpec.describe RegistrationsController, type: :controller do
         user: {
           email: "hello@world.com",
           password: "password123",
+          name: "Alice",
         }
       }
       expect(response.status).to eq 201
@@ -31,6 +33,7 @@ RSpec.describe RegistrationsController, type: :controller do
           persisted: true,
           email: "hello@world.com",
           token: user.token,
+          name: "Alice",
         },
       }.to_json)
     end
@@ -47,6 +50,7 @@ RSpec.describe RegistrationsController, type: :controller do
         user: {
           email: "helloworld",
           password: "password123",
+          name: "Alice",
         }
       }
       expect(response.status).to eq 400
@@ -62,6 +66,7 @@ RSpec.describe RegistrationsController, type: :controller do
         user: {
           email: "hello@world.com",
           password: "password123",
+          name: "Alice",
         }
       }
       expect(response.status).to eq 201

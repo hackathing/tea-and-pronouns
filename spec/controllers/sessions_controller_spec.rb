@@ -7,6 +7,7 @@ RSpec.describe SessionsController, type: :controller do
       user = User.create!(
       email: "hello@world.com",
       password: "password123",
+      name: "Alice",
       )
       post :create, params: {
         user: {
@@ -21,6 +22,7 @@ RSpec.describe SessionsController, type: :controller do
       user = User.create!(
       email: "hello@world.com",
       password: "password123",
+      name: "Alice",
       )
       post :create, params: {
         user: {
@@ -33,7 +35,7 @@ RSpec.describe SessionsController, type: :controller do
       expect(response.body).to be_json_eql({
         user: {
           persisted: true,
-          email: "hello@world.com",
+          id: user.id,
           token: user.token,
         },
       }.to_json)
@@ -43,6 +45,7 @@ RSpec.describe SessionsController, type: :controller do
       user = User.create!(
       email: "hello@world.com",
       password: "password123",
+      name: "Alice",
       )
       post :create, params: {
         user: {
@@ -56,6 +59,7 @@ RSpec.describe SessionsController, type: :controller do
       user = User.create!(
       email: "hello@world.com",
       password: "password123",
+      name: "Alice",
       )
       post :create, params: {}
       expect(response.status).to eq 400
@@ -65,6 +69,7 @@ RSpec.describe SessionsController, type: :controller do
       user = User.create!(
       email: "hello@world.com",
       password: "password123",
+      name: "Alice",
       )
       post :create, params: {
         user: {
@@ -84,6 +89,7 @@ RSpec.describe SessionsController, type: :controller do
       user = User.create!(
       email: "hello@world.com",
       password: "password123",
+      name: "Alice",
       )
       post :create, params: {
         user: {

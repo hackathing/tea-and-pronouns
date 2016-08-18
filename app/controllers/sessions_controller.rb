@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:user][:password])
       render status: 201, json: {
         user: {
-          email: user.email,
+          id: user.id,
           token: user.token,
           persisted: user.persisted?,
         },
