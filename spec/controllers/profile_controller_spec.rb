@@ -2,6 +2,12 @@ require 'rails_helper'
 
 RSpec.describe ProfileController, type: :controller do
 
+  def new_group
+    Group.create!(
+      name: "IHOP",
+    )
+  end
+
   def new_user
     User.create!(
       email: "hello@world.com",
@@ -13,6 +19,8 @@ RSpec.describe ProfileController, type: :controller do
   describe "GET show" do
     it 'shows the current user' do
       user = new_user
+      group = new_group
+      group.add_user(user)
       @request.env["HTTP_AUTHORIZATION"] = user.token
       get :show
       expect(response.status).to eq 200
@@ -22,6 +30,7 @@ RSpec.describe ProfileController, type: :controller do
           email: "hello@world.com",
           id: user.id,
           persisted: true,
+          groups: ["IHOP"]
         }
       }.to_json)
     end

@@ -16,7 +16,10 @@ class CreateUsers < ActiveRecord::Migration[5.0]
 
     create_table :groups do |t|
       t.string :name, null: false
+      t.string :slug, null: false
 
+      t.index :name, unique: true
+      t.index :slug, unique: true
       t.timestamps
     end
 

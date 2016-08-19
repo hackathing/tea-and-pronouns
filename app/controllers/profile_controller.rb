@@ -30,6 +30,7 @@ class ProfileController < ApplicationController
         email: user.email,
         id: user.id,
         persisted: user.persisted?,
+        groups: user.groups.pluck(:name), 
       }
     }
   end

@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   patch "/profile" => "profile#update"
   get "/preferences" => "preferences#show"
   patch "/preferences" => "preferences#update"
+  post "/groups" => "groups#create"
+  patch "/groups" => "groups#update"
 end
