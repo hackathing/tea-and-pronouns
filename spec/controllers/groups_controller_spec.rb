@@ -13,6 +13,7 @@ RSpec.describe GroupsController, type: :controller do
       email: "hello@world.com",
       password: "password",
       name: "Alice",
+      preferences: {tea: "chai"},
     )
   end
 
@@ -174,7 +175,10 @@ RSpec.describe GroupsController, type: :controller do
       expect(response.body).to be_json_eql({
         group: {
           name: "IHOP",
-          members: ["Alice", "Louis"]
+          members: [
+            ["Alice", { tea: "chai"}], 
+            [ "Louis", {}],
+          ]
         }
       }.to_json)
     end

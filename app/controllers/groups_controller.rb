@@ -59,7 +59,7 @@ class GroupsController < ApplicationController
     {
       group: {
         name: group.name,
-        members: group.users.pluck(:name),
+        members: group.users.pluck(:name, :preferences),
       }
     }
   end
