@@ -147,4 +147,73 @@ RSpec.describe GroupsController, type: :controller do
       }.to_json)
     end
   end
+
+  describe "GET show/:id" do
+    it "shows the group (designated by slug in url)" do
+      user = new_user
+      group = new_group
+      group.add_user(user)
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+      get :show, slug: group.slug
+      expect(response.status).to eq 200
+    end
+
+    it "renders the members of the group" do
+      user = new_user
+      group = new_group
+      group.add_user(user)
+      user2 =  User.create!(
+        email: "hello2@world.com",
+        password: "password",
+        name: "Louis",
+      )
+      group.add_user(user2)
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+      get :show, slug: group.slug
+      expect(response.status).to eq 200
+      expect(response.body).to be_json_eql({
+        group: {
+          name: "IHOP",
+          members: ["Alice", "Louis"]
+        }
+      }.to_json)
+    end
+    it "only shows the group if the request has a valid token" do
+      user = new_user
+      group = new_group
+      group.add_user(user)
+      @request.env["HTTP_AUTHORIZATION"] = "invalid token"
+      get :show, slug: group.slug
+      expect(response.status).to eq 401
+      expect(response.body).to be_json_eql({
+        error: "valid authorization token required"
+      }.to_json)
+    end
+    it "only shows the group if the user is a member" do
+      user = new_user
+      group = new_group
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+      get :show, slug: group.slug
+      expect(response.status).to eq 403
+      expect(response.body).to be_json_eql({
+        errors: {
+          group: { 
+            user: ["is not a member"] 
+          }
+        }
+      }.to_json)
+    end
+    it "renders error to user if group does not exist" do
+      user = new_user
+      group = new_group
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+      get :show, slug: "ihap"
+      expect(response.status).to eq 404
+      expect(response.body).to be_json_eql({
+        errors: {
+          group: ["not found"] 
+        }
+      }.to_json)
+    end
+  end
 end

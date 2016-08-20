@@ -14,6 +14,22 @@ class GroupsController < ApplicationController
     end
   end
 
+  def show
+    user = @current_user
+    # group = Group.find_by(id: params.fetch(:id))
+    group = Group.find_by(slug: params.fetch(:slug))
+    if group && group.users.include?(user)
+      render status: 200,
+        json: user_list(group)
+    elsif group
+      render status: 403,
+        json: membership_error(group)
+    else
+      render status: 404,
+        json: not_found_error(group)
+    end
+  end
+
   private
 
   def group_params
@@ -35,6 +51,31 @@ class GroupsController < ApplicationController
     {
       errors: {
         group: group.errors,
+      }
+    }
+  end
+
+  def user_list(group)
+    {
+      group: {
+        name: group.name,
+        members: group.users.pluck(:name),
+      }
+    }
+  end
+
+  def membership_error(group)
+    {
+      errors: {
+        group: { user: ["is not a member"] }
+      }
+    }
+  end
+
+  def not_found_error(group)
+    {
+      errors: {
+        group: ["not found"]
       }
     }
   end

@@ -7,5 +7,7 @@ Rails.application.routes.draw do
   get "/preferences" => "preferences#show"
   patch "/preferences" => "preferences#update"
   post "/groups" => "groups#create"
-  patch "/groups" => "groups#update"
+  get "/groups/:slug"  => "groups#show"
+  # get "/groups/:id"  => "groups#show"
+  # patch "/groups" => "groups#update"
 end
