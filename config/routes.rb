@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post "/groups" => "groups#create"
   get "/groups/:slug"  => "groups#show"
   patch "/groups/:slug" => "groups#update"
+  get "/invites" => "invites#index"
   # get "/groups/:id"  => "groups#show"
   # patch "/groups" => "groups#update"
 end

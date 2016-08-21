@@ -144,4 +144,8 @@ RSpec.describe User, type: :model do
     expect(user.groups.pluck(:name)).to eq ["IHOP"]
     expect(user.groups).to eq [group]
   end
+
+  describe "#accept_invite" do
+  end
+
 end

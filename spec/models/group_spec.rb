@@ -82,4 +82,8 @@ RSpec.describe Group, type: :model do
       expect(group2.slug).not_to eq "ihop-upstairs"
     end
   end
+  describe "#invite" do
+    it "allows users to invite members to a group"
+    it "only allows users to invite people to groups they are members of"
+end
 end

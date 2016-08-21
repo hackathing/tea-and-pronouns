@@ -17,4 +17,12 @@ class User < ApplicationRecord
                         allow_nil: true
 
   validates :name, presence: true
+
+  def accept_invite(group)
+    self.group_memberships.update(accepted: true)
+  end
+
+  def group_invites(user)
+    user.group_memberships.where(accepted: false)
+  end
 end

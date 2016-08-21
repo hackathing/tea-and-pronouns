@@ -2,10 +2,9 @@ class GroupsController < ApplicationController
 
   def create
     user = @current_user
-    group = Group.new(name: params.fetch(:group,{})[:name])
+    group = Group.new(name: params.fetch(:group, {})[:name])
     if group.save
-      group.add_user(user)
-      group.reload
+      group.add_user(user, accepted: true)
       render status: 201,
         json: create_success(group)
     else
@@ -16,7 +15,6 @@ class GroupsController < ApplicationController
 
   def show
     user = @current_user
-    # group = Group.find_by(id: params.fetch(:id))
     group = Group.find_by(slug: params.fetch(:slug))
     if group && group.users.include?(user)
       render status: 200,

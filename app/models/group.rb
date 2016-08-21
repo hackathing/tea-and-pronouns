@@ -2,24 +2,28 @@ class Group < ApplicationRecord
   has_many :group_memberships
   has_many :users, through: :group_memberships
 
-  before_validation { self.assign_attributes(slug: self.to_slug(self.name)) }
+  before_validation do
+    self.assign_attributes(slug: self.to_slug(self.name))
+  end
 
-  validates :name,  presence: true,
-                    uniqueness: { case_sensitive: false }
+  validates :name, presence: true,
+                   uniqueness: { case_sensitive: false }
 
-  validates :slug,  presence: true, 
-                    uniqueness: true
+  validates :slug, presence: true,
+                   uniqueness: true
 
   def to_slug(name)
-    if (Group.all.pluck(:slug)).include?(self.name.parameterize)
-      self.name.parameterize + rand(100...999).to_s
+    slug = name.parameterize
+    if Group.where(slug: slug).count > 0
+      to_slug(slug + rand(100...999).to_s)
     else
-      self.name.parameterize
+      slug
     end
   end
 
-  def add_user(user)
-    self.users << user 
+  def add_user(user, accepted: nil)
+    self.users << user
+    user.group_memberships.update(accepted: accepted)
     true
   rescue ActiveRecord::RecordInvalid => error
     if error.message == "Validation failed: User has already been taken"

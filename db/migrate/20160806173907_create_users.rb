@@ -26,6 +26,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
     create_table :group_memberships do |t|
       t.belongs_to :user, index: true, null: false
       t.belongs_to :group, index: true, null: false
+      t.boolean :accepted
 
       t.timestamps
     end

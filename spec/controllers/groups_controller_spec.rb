@@ -155,7 +155,7 @@ RSpec.describe GroupsController, type: :controller do
       group = new_group
       group.add_user(user)
       @request.env["HTTP_AUTHORIZATION"] = user.token
-      get :show, slug: group.slug
+      get :show, params: {slug: group.slug}
       expect(response.status).to eq 200
     end
 
@@ -170,7 +170,7 @@ RSpec.describe GroupsController, type: :controller do
       )
       group.add_user(user2)
       @request.env["HTTP_AUTHORIZATION"] = user.token
-      get :show, slug: group.slug
+      get :show, params: {slug: group.slug}
       expect(response.status).to eq 200
       expect(response.body).to be_json_eql({
         group: {
@@ -187,7 +187,7 @@ RSpec.describe GroupsController, type: :controller do
       group = new_group
       group.add_user(user)
       @request.env["HTTP_AUTHORIZATION"] = "invalid token"
-      get :show, slug: group.slug
+      get :show, params: {slug: group.slug}
       expect(response.status).to eq 401
       expect(response.body).to be_json_eql({
         error: "valid authorization token required"
@@ -197,7 +197,7 @@ RSpec.describe GroupsController, type: :controller do
       user = new_user
       group = new_group
       @request.env["HTTP_AUTHORIZATION"] = user.token
-      get :show, slug: group.slug
+      get :show, params: { slug: group.slug }
       expect(response.status).to eq 403
       expect(response.body).to be_json_eql({
         errors: {
@@ -211,7 +211,7 @@ RSpec.describe GroupsController, type: :controller do
       user = new_user
       group = new_group
       @request.env["HTTP_AUTHORIZATION"] = user.token
-      get :show, slug: "ihap"
+      get :show, params: { slug: "ihap" }
       expect(response.status).to eq 404
       expect(response.body).to be_json_eql({
         errors: {
