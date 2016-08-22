@@ -22,14 +22,8 @@ class Group < ApplicationRecord
   end
 
   def add_user(user, accepted: nil)
-    self.users << user
-    user.group_memberships.update(accepted: accepted)
-    true
-  rescue ActiveRecord::RecordInvalid => error
-    if error.message == "Validation failed: User has already been taken"
-      false
-    else
-      raise error
-    end
+    GroupMembership.new(
+      group: self, user: user, accepted: accepted
+    ).save
   end
 end

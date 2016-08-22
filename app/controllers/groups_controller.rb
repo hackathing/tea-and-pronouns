@@ -32,7 +32,7 @@ class GroupsController < ApplicationController
 
   def group_params
     params.fetch(:group, {})
-    .permit(:name)
+    .permit(:name, :slug, :accepted)
   end
 
   def create_success(group)
