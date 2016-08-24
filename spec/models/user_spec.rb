@@ -145,7 +145,15 @@ RSpec.describe User, type: :model do
     expect(user.groups).to eq [group]
   end
 
-  describe "#accept_invite" do
-  end
+  describe "#group_invites" do
 
+    it "allows users to invite members to a group" do
+      group = new_group
+      user = new_user
+      group.add_user(user, accepted: false)
+      expect(user.group_invites(user)).to eq ["IHOP"]
+    end
+
+    it "only allows users to invite people to groups they are members of"
+  end
 end

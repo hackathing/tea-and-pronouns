@@ -23,6 +23,14 @@ RSpec.describe InvitesController, type: :controller do
     )
   end
 
+  def new_user2
+    User.create!(
+      email: "h@w.com",
+      password: "wordpass",
+      name: "Louis",
+    )
+  end
+
   describe "GET index" do
     it "shows user a list of groups they are invited to" do
       user = new_user
@@ -35,7 +43,7 @@ RSpec.describe InvitesController, type: :controller do
       expect(response.status).to eq 200
       expect(response.body).to be_json_eql({
         invites: 
-          ["IHOP", "PHHH"]
+        ["IHOP", "PHHH"]
       }.to_json)
     end
 
@@ -62,7 +70,7 @@ RSpec.describe InvitesController, type: :controller do
       expect(response.status).to eq 401
     end
 
-    it "renders error information to the user" do
+    it "renders error information to the user if token is invalid" do
       user = new_user
       group = new_group
       group.add_user(user, accepted: false)
@@ -73,5 +81,111 @@ RSpec.describe InvitesController, type: :controller do
         error: "valid authorization token required"
       }.to_json)
     end
+  end
+
+  describe "POST create" do
+    it "allows users to invite someone to a group they are a member of" do
+      user = new_user
+      user2 = new_user2
+      group = new_group
+      group.add_user(user, accepted: true)
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+    post :create, params: {
+      user: {
+        name: "Louis"
+      },
+      group: {
+        name: "IHOP"
+      },
+    }
+      expect(response.status).to eq 201
+      expect(group.users.count).to eq 2
+      expect(response.body).to be_json_eql({
+        invited: "Louis",
+        group: "IHOP",
+      }.to_json)
+    end
+
+    it "does not allow users to invite someone to a group that they aren't a member of themselves" do
+      user = new_user
+      user2 = new_user2
+      group = new_group
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+    post :create, params: {
+      user: {
+        name: "Louis"
+      },
+      group: {
+        name: "IHOP"
+      },
+    }
+      expect(response.status).to eq 403
+      expect(group.users.count).to eq 0
+      expect(response.body).to be_json_eql({
+        errors: {
+          group: { user: ["is not a member"] }
+        }
+      }.to_json)
+    end
+
+    it "shows error info to the user if the group does not exist" do
+      user = new_user
+      user2 = new_user2
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+    post :create, params: {
+      user: {
+        name: "Louis"
+      },
+      group: {
+        name: "IHOP"
+      },
+    }
+      expect(response.status).to eq 404
+      expect(response.body).to be_json_eql({
+        errors: {
+          group: ["not found"]
+        }
+      }.to_json)
+    end
+
+    it "does not invite a user that does not exist in database" do
+      user = new_user
+      group = new_group
+      group.add_user(user, accepted: true)
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+    post :create, params: {
+      user: {
+        name: "claire"
+      },
+      group: {
+        name: "IHOP"
+      },
+    }
+      expect(response.status).to eq 404
+      # expect(group.users.count).to eq 2
+      expect(response.body).to be_json_eql({
+        errors: {
+          invited: { user: ["does not exist"] }
+        }
+      }.to_json)
+    end
+  end
+
+  describe "PATCH update" do
+
+    xit "allows user to accept an invitation to a group" do
+      user = new_user
+      group = new_group
+      group.add_user(user, accepted: false)
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+    patch :update, params: {
+      name: "Louis",
+      group: "IHOP"
+    }
+    expect
+    end
+    it "shows user error if they are already a member"
+    it "shows user error message if group does not exist"
+    it "does not allow a user to accept invites without a valid token"
   end
 end
