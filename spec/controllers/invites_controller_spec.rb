@@ -171,21 +171,54 @@ RSpec.describe InvitesController, type: :controller do
     end
   end
 
-  describe "PATCH update" do
+  describe "PATCH update/:id" do
 
-    xit "allows user to accept an invitation to a group" do
+    it "allows user to accept an invitation to a group" do
       user = new_user
       group = new_group
-      group.add_user(user, accepted: false)
+      group_membership = GroupMembership.create!(group: group, user: user)
       @request.env["HTTP_AUTHORIZATION"] = user.token
-    patch :update, params: {
-      name: "Louis",
-      group: "IHOP"
-    }
-    expect
+      patch :update, params: {
+        id: group_membership.id,
+        invite: { accepted: true },
+      }
+      group_membership.reload
+      expect(response.body).to be_json_eql({
+        invite: {
+          id: group_membership.id,
+          accepted: true,
+          group: {
+            id: group.id,
+            name: group.name,
+          },
+        },
+      }.to_json)
+      expect(group_membership.accepted).to eq true
     end
-    it "shows user error if they are already a member"
-    it "shows user error message if group does not exist"
+    it "shows user error message if invite does not exist" do
+      user = new_user
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+      patch :update, params: {
+        id: 131231
+      }
+      expect(response.body).to be_json_eql({
+        errors: {
+          invite: ["not found"],
+        }
+      }.to_json)
+    end
+    it "shows user error message if invite does not exist" do
+      user = new_user
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+      patch :update, params: {
+        id: 131231
+      }
+      expect(response.body).to be_json_eql({
+        errors: {
+          invite: ["not found"],
+        }
+      }.to_json)
+    end
     it "does not allow a user to accept invites without a valid token"
   end
 end

@@ -25,29 +25,19 @@ class InvitesController < ApplicationController
         json: membership_error(user)
     else
       render status: 404,
-        json: not_found_error(group)
+        json: group_not_found_error
     end
   end
 
-  ######################tests required ####################
   # Patch request for accepting invites
   def update
-    user = @current_user
-    group = Group.find_by(name: params.fetch(:name))
-    group_membership = GroupMembership.find_by(group: group)
-    if group && group.users.include?(user) && group_membership.accepted == nil || false
-      group.group_memberships.update(accepted: true)
-      render status: 200,
-        json: invite_accept(user)
-    elsif group && group.users.include?(user)
-      render status: 400,
-        json: already_member_error(invited_user_name)
-    elsif group
-      render status: 403,
-        json: not_invited_error(user)
+    group_membership = GroupMembership.find_by(id: params[:id], user: @current_user)
+    if group_membership.present?
+      group_membership.update!(update_params)
+      render status: 200, json: invite_updated(group_membership)
+
     else
-      render status: 404,
-        json: not_found_error(group)
+      render status: 404, json: invite_not_found_error
     end
   end
 
@@ -74,38 +64,28 @@ class InvitesController < ApplicationController
     }
   end
 
-def  membership_error(user)
-      {
-        errors: {
-          group: { user: ["is not a member"] }
+  def  membership_error(user)
+    {
+      errors: {
+        group: { user: ["is not a member"] }
+      }
+    }
+  end
+
+  def invite_updated(membership)
+    {
+      invite: {
+        id: membership.id,
+        accepted: membership.accepted?,
+        group: {
+          id: membership.group.id,
+          name: membership.group.name,
         }
       }
-end
-
-  def invite_accept(user)
-    {
-      user: user.name,
-      group: group.name
     }
   end
 
-  def already_member_error(user)
-    {
-      errors: {
-        invited: {user: ["is already a member"] }
-      }
-    }
-  end
-
-  def not_invited_error(user)
-    {
-      errors: {
-        group: { user: ["not invited to group"] }
-      }
-    }
-  end
-
-  def not_found_error(group)
+  def group_not_found_error
     {
       errors: {
         group: ["not found"]
@@ -113,4 +93,15 @@ end
     }
   end
 
+  def invite_not_found_error
+    {
+      errors: {
+        invite: ["not found"]
+      }
+    }
+  end
+
+  def update_params
+    params.require(:invite).permit(:accepted)
+  end
 end

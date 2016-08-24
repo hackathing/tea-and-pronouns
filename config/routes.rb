@@ -11,5 +11,5 @@ Rails.application.routes.draw do
   patch "/groups/:slug" => "groups#update"
   get "/invites" => "invites#index"
   post "/invites" => "invites#create"
-  patch "/invites" => "invites#update"
+  patch "/invites/:id" => "invites#update"
 end
