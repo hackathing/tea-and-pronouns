@@ -1,4 +1,8 @@
+require_relative "../views/sessions/render_json"
+
 class SessionsController < ApplicationController
+  include SessionsJson
+
   skip_before_action :token_authenticate! 
 
   def create
@@ -15,29 +19,4 @@ class SessionsController < ApplicationController
     end
   end
 
-  def login_success(user)
-    {
-      user: {
-        id: user.id,
-        token: user.token,
-        persisted: user.persisted?,
-      },
-    }
-  end
-
-  def password_error(user)
-    {
-      errors: {
-        user: { password: ["is incorrect"] }
-      }
-    }
-  end
-
-  def not_found_error(user)
-    {
-      errors: {
-        user: ["not found"]
-      }
-    }
-  end
 end

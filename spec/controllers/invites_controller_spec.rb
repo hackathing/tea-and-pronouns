@@ -195,6 +195,7 @@ RSpec.describe InvitesController, type: :controller do
       }.to_json)
       expect(group_membership.accepted).to eq true
     end
+
     it "shows user error message if invite does not exist" do
       user = new_user
       @request.env["HTTP_AUTHORIZATION"] = user.token
@@ -207,18 +208,19 @@ RSpec.describe InvitesController, type: :controller do
         }
       }.to_json)
     end
-    it "shows user error message if invite does not exist" do
+
+    it "does not allow a user to accept invites without a valid token" do
       user = new_user
-      @request.env["HTTP_AUTHORIZATION"] = user.token
+      group = new_group
+      group_membership = GroupMembership.create!(group: group, user: user)
+      @request.env["HTTP_AUTHORIZATION"] = "invalid token"
       patch :update, params: {
-        id: 131231
+        id: group_membership.id 
       }
+      expect(response.status).to eq 401
       expect(response.body).to be_json_eql({
-        errors: {
-          invite: ["not found"],
-        }
+        error: "valid authorization token required" 
       }.to_json)
     end
-    it "does not allow a user to accept invites without a valid token"
   end
 end

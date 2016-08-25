@@ -1,4 +1,6 @@
+require_relative "../views/preferences/render_json"
 class PreferencesController < ApplicationController
+  include PreferencesJson
 
   def show
     user = @current_user
@@ -22,20 +24,5 @@ class PreferencesController < ApplicationController
     params.fetch(:preferences, {})
     .permit(:tea, :coffee, :milk, :sugar)
     .to_h
-  end
-
-  def preferences_success(user)
-    {
-      preferences: user.preferences,
-      id: user.id
-    }
-  end
-
-  def user_errors(user)
-    {
-      errors: {
-        user: user.errors,
-      }
-    }
   end
 end

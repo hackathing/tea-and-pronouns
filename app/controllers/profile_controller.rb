@@ -1,4 +1,7 @@
+require_relative "../views/profile/render_json"
+
 class ProfileController < ApplicationController
+  include ProfileJson
 
   def show
     user = @current_user
@@ -23,23 +26,4 @@ class ProfileController < ApplicationController
     params.fetch(:profile, {}).permit(:name, :email, :password)
   end
 
-  def profile_success(user)
-    {
-      profile: {
-        name: user.name,
-        email: user.email,
-        id: user.id,
-        persisted: user.persisted?,
-        groups: user.groups.pluck(:name), 
-      }
-    }
-  end
-
-  def user_errors(user)
-    {
-      errors: {
-        user: user.errors,
-      }
-    }
-  end
 end
