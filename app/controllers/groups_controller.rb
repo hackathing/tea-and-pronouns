@@ -1,7 +1,7 @@
-require_relative "../views/groups/render_json"
+require_relative "../views/groups/groups_view"
 
 class GroupsController < ApplicationController
-  include GroupsJson
+  include GroupsView
 
   def create
     user = @current_user
@@ -16,6 +16,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # shows all members of particular group to user by :slug
   def show
     user = @current_user
     group = Group.find_by(slug: params.fetch(:slug))
@@ -35,6 +36,6 @@ class GroupsController < ApplicationController
 
   def group_params
     params.fetch(:group, {})
-    .permit(:name, :slug, :accepted)
+    .permit(:id, :name, :slug, :accepted)
   end
 end

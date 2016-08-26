@@ -1,4 +1,4 @@
-module RegistrationsJson
+module RegistrationsView
 
   def registration_success(user)
     {

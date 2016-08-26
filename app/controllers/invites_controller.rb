@@ -1,7 +1,7 @@
-require_relative "../views/invites/render_json"
+require_relative "../views/invites/invites_view"
 
 class InvitesController < ApplicationController
-  include InvitesJson
+  include InvitesView
 
   def index
     user = @current_user
@@ -12,20 +12,21 @@ class InvitesController < ApplicationController
   # POST request for inviting another user to a group.
   def create
     user = @current_user
-    group = Group.find_by(name: params.fetch(:group, {})[:name])
-    invited_user_name = params.fetch(:user, {})[:name]
-    # user names are not unique - how to handle this?
-    invited_user = User.find_by(name: invited_user_name)
+    group = Group.find_by(id: params.fetch(:invite, {})[:group_id])
+    invited_user = User.find_by(id: params.fetch(:invite, {})[:user_id])
+    # group = Group.find_by(name: params.fetch(:group, {})[:name])
+    # invited_user_name = params.fetch(:user, {})[:name]
+    # invited_user = User.find_by(name: invited_user_name)
     if group && group.users.include?(user) && invited_user
       group.add_user(invited_user, accepted: false)
       render status: 201,
         json: invited_success(invited_user, group)
     elsif group && group.users.include?(user)
       render status: 404,
-        json: invited_error(invited_user_name)
+        json: invited_error
     elsif group
       render status: 403,
-        json: membership_error(user)
+        json: membership_error
     else
       render status: 404,
         json: group_not_found_error

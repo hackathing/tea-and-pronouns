@@ -3,7 +3,9 @@ class Group < ApplicationRecord
   has_many :users, through: :group_memberships
 
   before_validation do
-    self.assign_attributes(slug: self.to_slug(self.name))
+    if self.name.present? and self.slug.blank?
+      self.slug = self.make_slug(self.name)
+    end
   end
 
   validates :name, presence: true,
@@ -12,12 +14,21 @@ class Group < ApplicationRecord
   validates :slug, presence: true,
                    uniqueness: true
 
-  def to_slug(name)
+  def make_slug(name)
     slug = name.parameterize
     if Group.where(slug: slug).count > 0
-      to_slug(slug + rand(100...999).to_s)
+      make_slug(slug + next_group_id.to_s)
     else
       slug
+    end
+  end
+
+  def next_group_id
+    last_group = Group.last
+    if last_group.present?
+      last_group.id + 1
+    else
+      1
     end
   end
 

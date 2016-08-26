@@ -1,7 +1,7 @@
-require_relative "../views/sessions/render_json"
+require_relative "../views/sessions/sessions_view"
 
 class SessionsController < ApplicationController
-  include SessionsJson
+  include SessionsView
 
   skip_before_action :token_authenticate! 
 

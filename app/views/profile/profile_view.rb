@@ -1,4 +1,4 @@
-module ProfileJson
+module ProfileView
 
   def profile_success(user)
     {

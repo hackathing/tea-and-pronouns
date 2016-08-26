@@ -91,12 +91,16 @@ RSpec.describe InvitesController, type: :controller do
       group.add_user(user, accepted: true)
       @request.env["HTTP_AUTHORIZATION"] = user.token
     post :create, params: {
-      user: {
-        name: "Louis"
-      },
-      group: {
-        name: "IHOP"
-      },
+      # user: {
+      #   name: "Louis"
+      # },
+      # group: {
+      #   name: "IHOP"
+      # },
+      invite: {
+        user_id: user2.id,
+        group_id: group.id,
+      }
     }
       expect(response.status).to eq 201
       expect(group.users.count).to eq 2
@@ -112,12 +116,10 @@ RSpec.describe InvitesController, type: :controller do
       group = new_group
       @request.env["HTTP_AUTHORIZATION"] = user.token
     post :create, params: {
-      user: {
-        name: "Louis"
-      },
-      group: {
-        name: "IHOP"
-      },
+      invite: {
+        user_id: user2.id,
+        group_id: group.id,
+      }
     }
       expect(response.status).to eq 403
       expect(group.users.count).to eq 0
@@ -133,12 +135,10 @@ RSpec.describe InvitesController, type: :controller do
       user2 = new_user2
       @request.env["HTTP_AUTHORIZATION"] = user.token
     post :create, params: {
-      user: {
-        name: "Louis"
-      },
-      group: {
-        name: "IHOP"
-      },
+      invite: {
+        user_id: user2.id,
+        group_id: 17,
+      }
     }
       expect(response.status).to eq 404
       expect(response.body).to be_json_eql({
@@ -154,15 +154,12 @@ RSpec.describe InvitesController, type: :controller do
       group.add_user(user, accepted: true)
       @request.env["HTTP_AUTHORIZATION"] = user.token
     post :create, params: {
-      user: {
-        name: "claire"
-      },
-      group: {
-        name: "IHOP"
-      },
+      invite: {
+        user_id: 17,
+        group_id: group.id,
+      }
     }
       expect(response.status).to eq 404
-      # expect(group.users.count).to eq 2
       expect(response.body).to be_json_eql({
         errors: {
           invited: { user: ["does not exist"] }

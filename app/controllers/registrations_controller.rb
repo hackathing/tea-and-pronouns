@@ -1,7 +1,7 @@
-require_relative "../views/registrations/render_json"
+require_relative "../views/registrations/registrations_view"
 
 class RegistrationsController < ApplicationController
-  include RegistrationsJson
+  include RegistrationsView
 
   skip_before_action :token_authenticate! 
 

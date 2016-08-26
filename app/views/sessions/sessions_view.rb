@@ -1,4 +1,4 @@
-module SessionsJson
+module SessionsView
 
   def login_success(user)
     {

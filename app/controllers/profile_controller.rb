@@ -1,7 +1,7 @@
-require_relative "../views/profile/render_json"
+require_relative "../views/profile/profile_view"
 
 class ProfileController < ApplicationController
-  include ProfileJson
+  include ProfileView
 
   def show
     user = @current_user

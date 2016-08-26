@@ -1,6 +1,6 @@
-require_relative "../views/preferences/render_json"
+require_relative "../views/preferences/preferences_view"
 class PreferencesController < ApplicationController
-  include PreferencesJson
+  include PreferencesView
 
   def show
     user = @current_user

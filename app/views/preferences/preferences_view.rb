@@ -1,4 +1,4 @@
-module PreferencesJson
+module PreferencesView
 
   def preferences_success(user)
     {

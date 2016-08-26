@@ -1,6 +1,7 @@
-module InvitesJson
+module InvitesView
 
   def groups_invited_to(user)
+    user.group_memberships.includes(:group)
     {
       invites: user.group_invites(user)
     }
@@ -13,7 +14,7 @@ module InvitesJson
     }
   end
 
-  def invited_error(invited_user_name)
+  def invited_error
     {
       errors: {
         invited: { user: ["does not exist"] }
@@ -21,7 +22,7 @@ module InvitesJson
     }
   end
 
-  def  membership_error(user)
+  def  membership_error
     {
       errors: {
         group: { user: ["is not a member"] }
