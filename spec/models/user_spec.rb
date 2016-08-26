@@ -16,6 +16,12 @@ RSpec.describe User, type: :model do
     )
   end
 
+  def new_group2
+    Group.create!(
+      name: "Group 2",
+    )
+  end
+
   it 'is invalid without a name' do
     user = User.new(
       password: "some valid password",
@@ -143,5 +149,24 @@ RSpec.describe User, type: :model do
     expect(user.groups.count).to eq 1
     expect(user.groups.pluck(:name)).to eq ["IHOP"]
     expect(user.groups).to eq [group]
+  end
+
+  describe "#group_invites" do
+
+    it "shows users the groups they are invited to" do
+      group = new_group
+      user = new_user
+      group.add_user(user, accepted: false)
+      expect(user.group_invites(user)).to eq ["IHOP"]
+    end
+
+    it "doesn't show the user groups they have already accepted" do
+      group = new_group
+      group2 = new_group2
+      user = new_user
+      group.add_user(user, accepted: true)
+      group2.add_user(user, accepted: false)
+      expect(user.group_invites(user)).to eq ["Group 2"]
+    end
   end
 end

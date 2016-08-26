@@ -16,13 +16,17 @@ class CreateUsers < ActiveRecord::Migration[5.0]
 
     create_table :groups do |t|
       t.string :name, null: false
+      t.string :slug, null: false
 
+      t.index :name, unique: true
+      t.index :slug, unique: true
       t.timestamps
     end
 
     create_table :group_memberships do |t|
       t.belongs_to :user, index: true, null: false
       t.belongs_to :group, index: true, null: false
+      t.boolean :accepted
 
       t.timestamps
     end

@@ -1,4 +1,7 @@
+require_relative "../views/profile/profile_view"
+
 class ProfileController < ApplicationController
+  include ProfileView
 
   def show
     user = @current_user
@@ -23,22 +26,4 @@ class ProfileController < ApplicationController
     params.fetch(:profile, {}).permit(:name, :email, :password)
   end
 
-  def profile_success(user)
-    {
-      profile: {
-        name: user.name,
-        email: user.email,
-        id: user.id,
-        persisted: user.persisted?,
-      }
-    }
-  end
-
-  def user_errors(user)
-    {
-      errors: {
-        user: user.errors,
-      }
-    }
-  end
 end

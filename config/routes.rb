@@ -6,4 +6,10 @@ Rails.application.routes.draw do
   patch "/profile" => "profile#update"
   get "/preferences" => "preferences#show"
   patch "/preferences" => "preferences#update"
+  post "/groups" => "groups#create"
+  get "/groups/:slug"  => "groups#show"
+  patch "/groups/:slug" => "groups#update"
+  get "/invites" => "invites#index"
+  post "/invites" => "invites#create"
+  patch "/invites/:id" => "invites#update"
 end
