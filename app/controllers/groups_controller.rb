@@ -31,11 +31,4 @@ class GroupsController < ApplicationController
         json: not_found_error(group)
     end
   end
-
-  private
-
-  def group_params
-    params.fetch(:group, {})
-    .permit(:id, :name, :slug, :accepted)
-  end
 end
