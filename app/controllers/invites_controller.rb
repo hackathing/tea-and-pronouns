@@ -31,7 +31,7 @@ class InvitesController < ApplicationController
   end
 
   # Patch request for accepting invites
-  # Requires params to include {invite: {id: group_membership.id, accepted: true}}
+  # Requires params to include {id: group_membership.id, invite: {accepted: true}}
   def update
     group_membership = GroupMembership.find_by(id: params[:id], user: @current_user)
     if group_membership.present?

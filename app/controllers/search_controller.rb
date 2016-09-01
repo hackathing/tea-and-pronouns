@@ -4,11 +4,8 @@ class SearchController < ApplicationController
   include SearchView
 
   def create
-    search_users = User.search(params[:search_term])
-    user_list = search_users.map do |user|
-      [name: user.name, id: user.id]
-    end
-    if user_list == []
+    search_users
+    if search_users == []
       render status: 200,
         json: no_match_found
     else
@@ -17,4 +14,7 @@ class SearchController < ApplicationController
     end
   end
 
+  def search_params
+    params[:search_term]
+  end
 end

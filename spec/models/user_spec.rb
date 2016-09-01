@@ -164,7 +164,7 @@ RSpec.describe User, type: :model do
     expect(user.groups).to eq [group]
   end
 
-  describe "pg_search_scope" do
+  describe "#search" do
 
     it "finds name in database and returns asscoiated user(s)" do
       user = new_user

@@ -31,10 +31,19 @@ RSpec.describe SearchController, type: :controller do
     )
   end
 
+  def new_user3
+    User.create!(
+      email: "h@b.com",
+      password: "wordpass",
+      name: "alice amy",
+    )
+  end
+
   describe "Post create" do
     it "should display a list of users matching the search terms" do
       user = new_user
       user2 = new_user2
+      user3 = new_user3
       @request.env["HTTP_AUTHORIZATION"] = user.token
       post :create, params: {
         search_term: "Alice",
@@ -42,7 +51,7 @@ RSpec.describe SearchController, type: :controller do
       expect(response.status).to eq 201
       expect(response.body).to be_json_eql({
         results: 
-        [[name: user.name, id: user.id]]
+        [{name: user.name, id: user.id}, {name: user3.name, id: user3.id}]
       }.to_json)
     end
     it "should not display any results unless request has a valid token" do
@@ -66,7 +75,7 @@ RSpec.describe SearchController, type: :controller do
       expect(response.status).to eq 201
       expect(response.body).to be_json_eql({
         results: 
-        [[name: user.name, id: user.id]]
+        [{name: user.name, id: user.id}]
       }.to_json)
     end
     it "should match users from partial serach terms" do
@@ -79,7 +88,7 @@ RSpec.describe SearchController, type: :controller do
       expect(response.status).to eq 201
       expect(response.body).to be_json_eql({
         results: 
-        [[name: user2.name, id: user2.id]]
+        [{name: user2.name, id: user2.id}]
       }.to_json)
     end
     it "should return a string if no users match terms" do

@@ -91,12 +91,6 @@ RSpec.describe InvitesController, type: :controller do
       group.add_user(user, accepted: true)
       @request.env["HTTP_AUTHORIZATION"] = user.token
     post :create, params: {
-      # user: {
-      #   name: "Louis"
-      # },
-      # group: {
-      #   name: "IHOP"
-      # },
       invite: {
         user_id: user2.id,
         group_id: group.id,
