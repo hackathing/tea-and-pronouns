@@ -7,6 +7,19 @@ RSpec.describe User, type: :model do
       email: "hello@world.com",
       password: "password",
       name: "Alice",
+      preferences: {
+        tea: "chai",
+        milk: true,
+        sugar: 2
+      }
+    )
+  end
+
+  def new_user2
+    User.create!(
+      email: "goodbye@world.com",
+      password: "password",
+      name: "Alice",
     )
   end
 
@@ -149,6 +162,36 @@ RSpec.describe User, type: :model do
     expect(user.groups.count).to eq 1
     expect(user.groups.pluck(:name)).to eq ["IHOP"]
     expect(user.groups).to eq [group]
+  end
+
+  describe "#search" do
+
+    it "finds name in database and returns asscoiated user(s)" do
+      user = new_user
+      user2 = new_user2
+      expect(User.search "Alice").to eq [user, user2]
+    end
+
+    it "finds email in database and returns associated user" do
+      user2 = new_user2
+      expect(User.search "goodbye@world.com").to eq [user2]
+    end
+
+    it "is not case sensitive" do
+      user = new_user
+      user2 = new_user2
+      expect(User.search "aLicE").to eq [user, user2]
+    end
+
+    it "matches on a the first part of an incomplete field" do
+      user = new_user
+      expect(User.search "al").to eq [user]
+    end
+
+    it "only searches name and email columns" do
+      user = new_user
+      expect(User.search "chai").to eq []
+    end
   end
 
   describe "#group_invites" do

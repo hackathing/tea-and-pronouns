@@ -14,9 +14,6 @@ class InvitesController < ApplicationController
     user = @current_user
     group = Group.find_by(id: params.fetch(:invite, {})[:group_id])
     invited_user = User.find_by(id: params.fetch(:invite, {})[:user_id])
-    # group = Group.find_by(name: params.fetch(:group, {})[:name])
-    # invited_user_name = params.fetch(:user, {})[:name]
-    # invited_user = User.find_by(name: invited_user_name)
     if group && group.users.include?(user) && invited_user
       group.add_user(invited_user, accepted: false)
       render status: 201,
@@ -34,6 +31,7 @@ class InvitesController < ApplicationController
   end
 
   # Patch request for accepting invites
+  # Requires params to include {id: group_membership.id, invite: {accepted: true}}
   def update
     group_membership = GroupMembership.find_by(id: params[:id], user: @current_user)
     if group_membership.present?
