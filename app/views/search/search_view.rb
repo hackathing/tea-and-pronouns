@@ -1,25 +1,10 @@
 module SearchView
 
-  def user_list
-    search_users.map do |user|
-      {name: user.name, id: user.id}
-    end
-  end
-
-    def search_users
-    User.search(search_params)
-    end
-
-
-  def search_results(user_list)
+  def search_results(search_users)
     {
-      results: user_list
-    }
-  end
-
-  def no_match_found
-    {
-      results: "Your search did not match any users"
+      users: search_users.map do |user|
+        { name: user.name, id: user.id }
+      end
     }
   end
 end

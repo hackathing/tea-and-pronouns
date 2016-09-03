@@ -82,3 +82,35 @@ So:
 When a user creates a group they automatically have accepted: true. When a user adds another user to a group, htey automatically have accepted: false. The route for this should be /groups/:name/invite and it should be a post becasue you are creating the invite and that user doesn't automatically have a coumn in the group membership table. It should be in the groups/:name/update route though? This is confusing. 
 
 A user can go to the route user/invites show and see their invites. from here they can do a patch request to accept the invite, going from false to true. (or false)
+
+What is the problem exactly?
+I want search_users (a variable) to pass it's resulting array to the SearchView module and the user_list method
+
+What I think should happen?
+search users returns an array
+(yes)
+
+user_list performs a map on the array
+(no - it says map is an undefined method)
+
+what happens
+using pry I can do 
+search_users.map do |user|
+{name: user.name}
+end
+
+and this works but 
+user_list(search_users)
+fails...
+
+and also
+user_list(new_user3)
+fails the same way
+
+changed user_list method so that search_users becomes search_users.to_a.map
+
+now user_list works but search_results fails ...
+
+
+
+

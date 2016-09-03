@@ -48,15 +48,15 @@ RSpec.describe SearchController, type: :controller do
       post :create, params: {
         search_term: "Alice",
       }
-      expect(response.status).to eq 201
+      expect(response.status).to eq 200
       expect(response.body).to be_json_eql({
-        results: 
+        users: 
         [{name: user.name, id: user.id}, {name: user3.name, id: user3.id}]
       }.to_json)
     end
     it "should not display any results unless request has a valid token" do
-      user = new_user
-      user2 = new_user2
+      _user = new_user
+      _user2 = new_user2
       @request.env["HTTP_AUTHORIZATION"] = "invalid token"
       post :create, params: {
         search_term: "Alice",
@@ -72,9 +72,9 @@ RSpec.describe SearchController, type: :controller do
       post :create, params: {
         search_term: "aliCe",
       }
-      expect(response.status).to eq 201
+      expect(response.status).to eq 200
       expect(response.body).to be_json_eql({
-        results: 
+        users: 
         [{name: user.name, id: user.id}]
       }.to_json)
     end
@@ -85,21 +85,21 @@ RSpec.describe SearchController, type: :controller do
       post :create, params: {
         search_term: "lou",
       }
-      expect(response.status).to eq 201
+      expect(response.status).to eq 200
       expect(response.body).to be_json_eql({
-        results: 
+        users: 
         [{name: user2.name, id: user2.id}]
       }.to_json)
     end
-    it "should return a string if no users match terms" do
+    it "should return empty array if no users match terms" do
       user = new_user
       @request.env["HTTP_AUTHORIZATION"] = user.token
       post :create, params: {
         search_term: "fred",
       }
       expect(response.status).to eq 200
-      expect(response.body).to be_json_eql({
-        results: "Your search did not match any users"
+      expect(response.body).to be_json_eql({ 
+        users: [],
       }.to_json)
     end
   end
