@@ -7,6 +7,7 @@ module ProfileView
         email: user.email,
         id: user.id,
         persisted: user.persisted?,
+        avatar: user.gravatar_for(user),
         groups: user.groups.pluck(:name), 
       }
     }
