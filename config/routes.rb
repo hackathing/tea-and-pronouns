@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   post "/invites" => "invites#create"
   patch "/invites/:id" => "invites#update"
   post "/search" => "search#create"
+  get "/users/index" => "users#index"
 end
