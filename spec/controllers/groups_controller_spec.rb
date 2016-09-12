@@ -17,6 +17,24 @@ RSpec.describe GroupsController, type: :controller do
     )
   end
 
+  def new_user2
+    User.create!(
+      email: "h@w.com",
+      password: "wordpass",
+      name: "Louis",
+      preferences: {coffee: "black"},
+    )
+  end
+
+  def new_user3
+    User.create!(
+      email: "h@b.com",
+      password: "wordpass",
+      name: "alice amy",
+      preferences: {pronouns: "they"},
+    )
+  end
+
   describe "POST create" do
     it "allows user to create a group" do
       user = new_user
@@ -47,7 +65,7 @@ RSpec.describe GroupsController, type: :controller do
     end
 
     it "only allows users with valid token to create groups" do
-      user = new_user
+      _user = new_user
       @request.env["HTTP_AUTHORIZATION"] = "invalid_token"
       post :create, params: {
         group: {
@@ -161,14 +179,12 @@ RSpec.describe GroupsController, type: :controller do
 
     it "renders the members of the group" do
       user = new_user
+      user2 = new_user2
+      user3 = new_user3
       group = new_group
       group.add_user(user)
-      user2 =  User.create!(
-        email: "hello2@world.com",
-        password: "password",
-        name: "Louis",
-      )
       group.add_user(user2)
+      group.add_user(user3)
       @request.env["HTTP_AUTHORIZATION"] = user.token
       get :show, params: {slug: group.slug}
       expect(response.status).to eq 200
@@ -177,7 +193,8 @@ RSpec.describe GroupsController, type: :controller do
           name: "IHOP",
           members: [
             ["Alice", { tea: "chai"}], 
-            [ "Louis", {}],
+            [ "alice amy", { pronouns: "they" }],
+            [ "Louis", { coffee: "black" }],
           ]
         }
       }.to_json)
@@ -209,13 +226,35 @@ RSpec.describe GroupsController, type: :controller do
     end
     it "renders error to user if group does not exist" do
       user = new_user
-      group = new_group
+      _group = new_group
       @request.env["HTTP_AUTHORIZATION"] = user.token
       get :show, params: { slug: "ihap" }
       expect(response.status).to eq 404
       expect(response.body).to be_json_eql({
         errors: {
           group: ["not found"] 
+        }
+      }.to_json)
+    end
+    it "should display sorted list of users in group" do
+      user = new_user
+      user2 = new_user2
+      user3 = new_user3
+      group = new_group
+      group.add_user(user)
+      group.add_user(user2)
+      group.add_user(user3)
+      @request.env["HTTP_AUTHORIZATION"] = user.token
+      get :show, params: {slug: group.slug}
+      expect(response.status).to eq 200
+      expect(response.body).to be_json_eql({
+        group: {
+          name: "IHOP",
+          members: [
+            ["Alice", { tea: "chai"}], 
+            [ "alice amy", { pronouns: "they" }],
+            [ "Louis", { coffee: "black" }],
+          ]
         }
       }.to_json)
     end

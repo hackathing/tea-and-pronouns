@@ -23,7 +23,7 @@ module GroupsView
     {
       group: {
         name: group.name,
-        members: group.users.pluck(:name, :preferences),
+        members: group.users.order("name asc").pluck(:name, :preferences),
       }
     }
   end

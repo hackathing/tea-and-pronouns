@@ -68,5 +68,6 @@ RSpec.describe UsersController, type: :controller do
         }]
       }.to_json)
     end
+
   end
 end
