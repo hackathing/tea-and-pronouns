@@ -30,6 +30,8 @@ fromAuthJsonTests =
                         (Ok
                             { email = "foo@bar.baz"
                             , token = "hello-token"
+                            , drink = { type' = Nothing }
+                            , pronouns = Nothing
                             }
                         )
         ]

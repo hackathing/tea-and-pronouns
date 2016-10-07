@@ -5,6 +5,9 @@ import Auth.Update as Auth
 import Auth.State
 import Server.Update as Server
 import Server.State
+import App.Update as App'
+import App.State
+import User exposing (User)
 
 
 doUpdate : Msg -> Model -> ( Model, Cmd Msg )
@@ -16,6 +19,9 @@ doUpdate msg model =
         ServerMsg (Server.State.LoginFail state) ->
             handleAuthFail (Server.State.RegisterFail state) model
 
+        ServerMsg (Server.State.AuthSuccess user) ->
+            initApp user model |> updateServer (Server.State.AuthSuccess user)
+
         ServerMsg msg ->
             updateServer msg model
 
@@ -26,13 +32,15 @@ doUpdate msg model =
             updateServer (Server.State.Login state) model
 
         AuthMsg msg ->
-            let
-                ( authModel, cmd ) =
-                    Auth.update msg model.auth
-            in
-                ( { model | auth = authModel }
-                , Cmd.map AuthMsg cmd
-                )
+            updateAuth msg model
+
+        AppMsg msg ->
+            updateApp msg model
+
+
+initApp : User -> Model -> Model
+initApp user model =
+    { model | auth = Auth.State.init, app = Just (App.State.init user) }
 
 
 handleAuthFail : Server.State.Msg -> Model -> ( Model, Cmd Msg )
@@ -53,6 +61,33 @@ updateServer msg model =
         ( { model | server = serverModel }
         , Cmd.map ServerMsg cmd
         )
+
+
+updateAuth : Auth.State.Msg -> Model -> ( Model, Cmd Msg )
+updateAuth msg model =
+    let
+        ( authModel, cmd ) =
+            Auth.update msg model.auth
+    in
+        ( { model | auth = authModel }
+        , Cmd.map AuthMsg cmd
+        )
+
+
+updateApp : App.State.Msg -> Model -> ( Model, Cmd Msg )
+updateApp msg model =
+    case model.app of
+        Just appModel ->
+            let
+                ( newAppModel, cmd ) =
+                    App'.update msg appModel
+            in
+                ( { model | app = Just newAppModel }
+                , Cmd.map AppMsg cmd
+                )
+
+        Nothing ->
+            ( model, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
