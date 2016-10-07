@@ -23,7 +23,7 @@ bundle exec rails s # Run the backend
 
 ```sh
 bundle exec rails s # Run the backend
-make start          # Run the frontend dev server
+make dev            # Run the frontend dev server
 # Now go to localhost:8080
 ```
 
