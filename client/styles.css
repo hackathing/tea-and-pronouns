@@ -1,0 +1,6 @@
+@import 'colors.css';
+@import 'typography.css';
+
+h1 {
+  color: var(--color-primary);
+}
