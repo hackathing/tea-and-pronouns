@@ -1,10 +1,3 @@
-guard :shell do
-  watch(/(.*).elm/) do |m|
-    is_project_file = !m[0].to_s.include?("elm-stuff")
-    `FORCE_COLOR=1 make test` if is_project_file
-  end
-end
-
 guard :rspec, cmd: "bin/rspec", notification: false do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)

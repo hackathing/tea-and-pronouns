@@ -1,25 +1,18 @@
-var path              = require('path');
-var webpack           = require('webpack');
-var merge             = require('webpack-merge');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var cssimport         = require('postcss-import');
-var cssnext           = require('postcss-cssnext');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path              = require('path');
+const webpack           = require('webpack');
+const merge             = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const cssimport         = require('postcss-import');
+const cssnext           = require('postcss-cssnext');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var inProd = process.env.NODE_ENV === "production";
-
-var regexEndpoint = JSON.stringify(
-  inProd ? "/regex" : "//localhost:3000/regex"
-);
-
-var commonConfig = {
+const commonConfig = {
   output: {
     path:     path.resolve(__dirname, 'public/'),
     filename: '[hash].js',
   },
 
   module: {
-    noParse: /\.elm$/,
     loaders: [
       {
         test: /\.(eot|ttf|woff|woff2|svg)$/,
@@ -39,18 +32,16 @@ var commonConfig = {
     new webpack.DefinePlugin({
       regexEndpoint: regexEndpoint,
     }),
-
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       inject:   'body',
       filename: 'index.html'
     }),
-
     new ExtractTextPlugin('./[hash].css', { allChunks: true }),
   ],
 
   postcss: (webpack) => [
-    cssimport({ path: "./src/styles/", addDependencyTo: webpack }),
+    cssimport({ path: "./client/styles/", addDependencyTo: webpack }),
     cssnext(),
   ],
 };
@@ -69,16 +60,6 @@ if (process.env.NODE_ENV === 'development') {
       inline:   true,
       progress: true
     },
-
-    module: {
-      loaders: [
-        {
-          test:    /\.elm$/,
-          exclude: [/elm-stuff/, /node_modules/],
-          loader:  'elm-hot!elm-webpack?verbose=true&warn=true'
-        },
-      ],
-    },
   });
 }
 
@@ -89,19 +70,8 @@ if (process.env.NODE_ENV === 'production') {
 
     entry: path.join(__dirname, 'src/index.js'),
 
-    module: {
-      loaders: [
-        {
-          test:    /\.elm$/,
-          exclude: [/elm-stuff/, /node_modules/],
-          loader:  'elm-webpack'
-        }
-      ]
-    },
-
     plugins: [
       new webpack.optimize.OccurenceOrderPlugin(),
-
       new webpack.optimize.UglifyJsPlugin({
           minimize:   true,
           compressor: { warnings: false }

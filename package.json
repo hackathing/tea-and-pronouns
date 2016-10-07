@@ -17,9 +17,6 @@
   "dependencies": {
     "autoprefixer": "^6.4.0",
     "css-loader": "^0.23.1",
-    "elm": "^0.17.0",
-    "elm-hot-loader": "^0.3.2",
-    "elm-webpack-loader": "^3.0.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^2.17.0",
@@ -27,7 +24,6 @@
     "postcss-cssnext": "^2.7.0",
     "postcss-import": "^8.1.2",
     "postcss-loader": "^0.9.1",
-    "project-fuzzball-test": "^1.0.6",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
