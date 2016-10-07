@@ -1,8 +1,0 @@
-a {
-  color: var(--color-secondary);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
