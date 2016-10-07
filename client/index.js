@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import reducer from './reducer'
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducer from './reducer';
+
+import 'reset-css';
+import './styles.css';
 
 const store = createStore(reducer);
 
