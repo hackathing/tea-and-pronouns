@@ -1,5 +1,6 @@
 BIN=./node_modules/.bin
 
+MOCHA=$(BIN)/mocha
 WEBPACK=$(BIN)/webpack
 WEBPACK_SERVER=$(BIN)/webpack-dev-server
 
@@ -26,9 +27,17 @@ clean: ## Delete compiled files
 	rm -rf public
 
 
+test: ## Run the tests
+	$(MOCHA)
+
+
+test-watch: ## Run the tests when files change
+	$(MOCHA) --watch
+
 .PHONY: \
 	install \
 	start \
 	build \
 	clean \
+	test \
 	help
