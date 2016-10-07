@@ -30,6 +30,7 @@ RSpec.describe ProfileController, type: :controller do
           email: "hello@world.com",
           id: user.id,
           persisted: true,
+          avatar: user.gravatar_for(user),
           groups: ["IHOP"]
         }
       }.to_json)

@@ -189,7 +189,7 @@ RSpec.describe User, type: :model do
     end
 
     it "only searches name and email columns" do
-      user = new_user
+      _user = new_user
       expect(User.search "chai").to eq []
     end
   end
@@ -210,6 +210,26 @@ RSpec.describe User, type: :model do
       group.add_user(user, accepted: true)
       group2.add_user(user, accepted: false)
       expect(user.group_invites(user)).to eq ["Group 2"]
+    end
+  end
+  describe "#gravatar_for" do
+    it "creates valid url from user email" do
+      user = new_user
+     expect(user.gravatar_for(user)).to eq "//gravatar.com/avatar/#{Digest::MD5::hexdigest(user.email.downcase)
+}?d=monsterid"
+    end
+
+    it "downcases email" do
+      user = new_user
+      gravatar_lower_case = user.gravatar_for(user)
+      user.email.upcase
+      expect(user.gravatar_for(user)).to eq gravatar_lower_case
+    end
+
+    it "always creates the same garavatar id for a given email" do
+      user = new_user
+      gravatar_one = user.gravatar_for(user)
+      expect(user.gravatar_for(user)).to eq gravatar_one
     end
   end
 end
