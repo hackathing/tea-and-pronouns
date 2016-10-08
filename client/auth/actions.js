@@ -1,6 +1,7 @@
 export const SELECT_REGISTER = 'AUTH_SELECT_REGISTER';
 export const SELECT_LOGIN = 'AUTH_SELECT_LOGIN';
 export const SET_FIELD = 'AUTH_SET_FIELD';
+export const SUBMIT = 'AUTH_SUBMIT';
 
 export function selectRegister() {
   return {
@@ -19,5 +20,11 @@ export function setField(fieldName, value) {
     type: SET_FIELD,
     fieldName,
     value,
+  };
+}
+
+export function submit() {
+  return {
+    type: SUBMIT,
   };
 }
