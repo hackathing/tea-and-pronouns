@@ -2,5 +2,71 @@
 @import 'typography.css';
 
 h1 {
-  color: var(--color-primary);
+  color: var(--heading-color-primary);
+  font-size: 120px;
+  margin-bottom: 60px;
+}
+
+h2 {
+	color: var(--heading-color-secondary);
+	margin-bottom: 60px;
+}
+
+.page-wrapper {
+	text-align: center;
+	padding-top: 12%;
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
+input {
+	margin-bottom: 30px;
+}
+
+/*input:focus {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+}*/
+
+input[type="text"] {
+	width: 65%;
+	min-height: 50px;
+	font-size: 68px;
+}
+
+input[type="submit"] {
+	display: block;
+	text-align: center;
+	font-size: larger;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input[type="submit"] + label {
+	color: var(--color-primary);
+	display: block;
+    width: 100%;
+    border-radius: 5px;
+    min-height: 50px;
+    font-size: 68px;
+    padding: 20px 0;
+    background-color: white;
+    border: 1px solid;
+	border-color: transparent;
+}
+
+input[type="submit"]:focus + label {
+	border: 1px solid;
+	border-color: var(--color-primary);
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
