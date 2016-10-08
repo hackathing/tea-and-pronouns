@@ -1,4 +1,9 @@
 :root {
-  --color-primary: hotpink;
+  --color-primary: #ff9500;
   --color-secondary: skyblue;
+}
+
+:root {
+	--heading-color-primary: #5D5D5D;
+	--heading-color-secondary: #ff9500;
 }

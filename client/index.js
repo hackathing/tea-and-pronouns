@@ -6,13 +6,16 @@ import reducer from './reducer';
 
 import 'reset-css';
 import './styles.css';
+import {AppContainer} from './App';
 
 const store = createStore(reducer);
 
 function ConnectedApp() {
   return (
     <Provider store={store}>
-      <h1>Tea & Pronouns!</h1>
+      <div className="page-wrapper">
+		<AppContainer />
+      </div>
     </Provider>
   );
 };
