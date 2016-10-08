@@ -1,5 +1,6 @@
-export const SELECT_REGISTER = 'SELECT_REGISTER';
-export const SELECT_LOGIN = 'SELECT_LOGIN';
+export const SELECT_REGISTER = 'AUTH_SELECT_REGISTER';
+export const SELECT_LOGIN = 'AUTH_SELECT_LOGIN';
+export const SET_FIELD = 'AUTH_SET_FIELD';
 
 export function selectRegister() {
   return {
@@ -10,5 +11,13 @@ export function selectRegister() {
 export function selectLogin() {
   return {
     type: SELECT_LOGIN,
+  };
+}
+
+export function setField(fieldName, value) {
+  return {
+    type: SET_FIELD,
+    fieldName,
+    value,
   };
 }
